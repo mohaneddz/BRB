@@ -50,4 +50,8 @@ module.exports = {
     },
   },
   plugins: [],
+  native: {
+    // 👇 Register components used with className
+    classes: ['Pressable', 'View', 'Text'],
+  },
 }

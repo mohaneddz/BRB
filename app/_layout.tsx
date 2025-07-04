@@ -9,13 +9,11 @@ export default function RootLayout() {
     'ZenDots': require('../assets/fonts/ZenDots-Regular.ttf'),
   });
 
-  // console.log('Fonts loaded:', fontsLoaded); // Debug log
-
   if (!fontsLoaded) return null;
 
   return (
-    <Stack>
-      <Stack.Screen name="pages" options={{ headerShown: false }} />
-    </Stack>
+      <Stack>
+        <Stack.Screen name="pages" options={{ headerShown: false }} />
+      </Stack>
   );
 }

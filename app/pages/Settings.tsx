@@ -1,5 +1,3 @@
-// import { StyleSheet } from 'react-native';
-
 import { View, Text } from '@/components/Styled';
 
 export default function Settings() {

@@ -4,7 +4,7 @@
 
 
 body {
-  @apply bg-bg-dark text-text-enabled;
+@apply bg-bg-dark text-text-enabled;
   color: red;
 }
 

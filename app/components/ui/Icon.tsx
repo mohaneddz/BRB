@@ -19,6 +19,7 @@ export default function Icon(props: Props) {
 
   return (
     <IconComponent
+      className=""
       size={props.size || 24}
       color={props.color}
       style={[{ marginBottom: -3 }, props.style]}
