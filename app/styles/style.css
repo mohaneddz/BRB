@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  @apply bg-bg-dark text-text-enabled;
+  color: red;
+}
+
+@theme {
+  /* Primary */
+  --color-primary: rgb(248, 35, 28);
+  --color-primary-light: rgb(255, 80, 75);
+  --color-primary-dark: rgb(183, 24, 19);
+  --color-primary-hover: rgb(224, 28, 21);
+  --color-primary-transparent: rgba(248, 35, 28, 0.2);
+
+  /* Background */
+  --color-bg-dark: rgb(10, 10, 9);
+  --color-bg-dark-soft: rgb(18, 18, 16);
+  --color-bg-dark-transparent: rgba(10, 10, 9, 0.9);
+
+  --color-bg-light: rgb(255, 255, 255);
+  --color-bg-light-muted: rgb(245, 245, 245);
+  --color-bg-light-transparent: rgba(255, 255, 255, 0.9);
+
+  /* Foreground */
+  --color-fg: rgb(24, 24, 22);
+  --color-fg-muted: rgb(42, 42, 40);
+  --color-fg-light: rgb(61, 61, 58);
+
+  /* Text */
+  --text-disabled: rgb(105, 105, 105);
+  --text-disabled-light: rgb(160, 160, 160);
+
+  --text-enabled: rgb(255, 255, 255);
+  --text-enabled-dark: rgb(237, 237, 237);
+  --text-enabled-contrast: rgb(0, 0, 0);
+
+  /* Borders & Shadows */
+  --border-color: rgb(41, 41, 38);
+  --border-color-light: rgb(224, 224, 224);
+  --shadow-color: rgba(0, 0, 0, 0.25);
+
+  /* Status */
+  --success: rgb(0, 195, 109);
+  --warning: rgb(255, 193, 7);
+  --error: rgb(255, 59, 59);
+}
