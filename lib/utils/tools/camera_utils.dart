@@ -10,6 +10,11 @@ class CameraService {
 
   Future<void> initCameras() async {
     cameras = await availableCameras();
+    // Prefer front camera if available
+    int frontIdx = cameras!.indexWhere(
+      (c) => c.lensDirection == CameraLensDirection.front,
+    );
+    selectedCameraIdx = frontIdx != -1 ? frontIdx : 0;
     if (cameras!.isNotEmpty) {
       await onNewCameraSelected(cameras![selectedCameraIdx], selectedCameraIdx);
     }

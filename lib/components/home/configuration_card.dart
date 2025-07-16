@@ -16,11 +16,11 @@ class ConfigurationCardState extends State<ConfigurationCard> {
   bool lock = true;
   double volume = 0.5;
   double sound = 0.5;
-  String distance = '1m';
+  String mode = 'Pocket';
   String delay = '1s';
 
-  final List<String> distances = ['1m', '2m', '3m'];
-  final List<String> delays = ['1s', '2s', '3s'];
+  final List<String> modes = ['Pocket', 'Distance', 'Sensitive'];
+  final List<String> delays = ['1s', '3s', '5s', '10s'];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,11 @@ class ConfigurationCardState extends State<ConfigurationCard> {
           child: Center(
             child: Text(
               'Current Configuration',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -54,10 +58,14 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Distance
+                          // Mode
                           MySettingRow(
-                            label: 'Distance',
-                            child: MyDropdown(value: distance, items: distances, onChanged: (val) => setState(() => distance = val!)),
+                            label: 'Mode',
+                            child: MyDropdown(
+                              value: mode,
+                              items: modes,
+                              onChanged: (val) => setState(() => mode = val!),
+                            ),
                           ),
                           const SizedBox(height: 12),
                           // Vibration
@@ -65,7 +73,8 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                             label: 'Vibration',
                             child: Checkbox(
                               value: vibration,
-                              onChanged: (val) => setState(() => vibration = val!),
+                              onChanged: (val) =>
+                                  setState(() => vibration = val!),
                               activeColor: Colors.red,
                               checkColor: Colors.white,
                               side: const BorderSide(color: Colors.red),
@@ -76,13 +85,22 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                           MySettingRow(
                             label: 'Volume',
                             width: 75,
-                            child: Slider(value: volume, onChanged: (val) => setState(() => volume = val), activeColor: Colors.red, inactiveColor: Colors.red.withAlpha(3)),
+                            child: Slider(
+                              value: volume,
+                              onChanged: (val) => setState(() => volume = val),
+                              activeColor: Colors.red,
+                              inactiveColor: Colors.red.withAlpha(3),
+                            ),
                           ),
                         ],
                       ),
                     ),
                     // Divider------------------------------------------
-                    Container(width: 1, color: Colors.white24, margin: const EdgeInsets.symmetric(horizontal: 12)),
+                    Container(
+                      width: 1,
+                      color: Colors.white24,
+                      margin: const EdgeInsets.symmetric(horizontal: 12),
+                    ),
                     // Right column ------------------------------------------
                     Expanded(
                       child: Column(
@@ -91,7 +109,11 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                           // Delay
                           MySettingRow(
                             label: 'Delay',
-                            child: MyDropdown(value: delay, items: delays, onChanged: (val) => setState(() => delay = val!)),
+                            child: MyDropdown(
+                              value: delay,
+                              items: delays,
+                              onChanged: (val) => setState(() => delay = val!),
+                            ),
                           ),
                           const SizedBox(height: 12),
                           // Lock
@@ -110,7 +132,12 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                           MySettingRow(
                             label: 'Sound',
                             width: 75,
-                            child: Slider(value: sound, onChanged: (val) => setState(() => sound = val), activeColor: Colors.red, inactiveColor: Colors.red.withAlpha(3)),
+                            child: Slider(
+                              value: sound,
+                              onChanged: (val) => setState(() => sound = val),
+                              activeColor: Colors.red,
+                              inactiveColor: Colors.red.withAlpha(3),
+                            ),
                           ),
                         ],
                       ),
@@ -127,12 +154,19 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Presets()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Presets()),
+                    );
                   },
-                  child: const Text('Presets', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: const Text(
+                    'Presets',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ),
             ],

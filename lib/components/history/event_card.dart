@@ -2,25 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
+import 'package:brb/components/ui/toast.dart'; // <-- Add this import
 
 class EventCard extends StatefulWidget {
   final String coordinates;
   final String location;
   final DateTime? dateTime;
 
-  const EventCard({super.key, this.coordinates = '38.45651 - 8.1548', this.location = 'Sidi Abdellah', this.dateTime});
+  const EventCard({
+    super.key,
+    this.coordinates = '38.45651 - 8.1548',
+    this.location = 'Sidi Abdellah',
+    this.dateTime,
+  });
 
   @override
   State<EventCard> createState() => _EventCardState();
 }
 
 class _EventCardState extends State<EventCard> {
+  OverlayEntry? _toastEntry;
+
+  void _showToast(String message, ToastType type) {
+    _toastEntry?.remove();
+    _toastEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 24,
+        left: 0,
+        right: 0,
+        child: Toast(
+          message: message,
+          type: type,
+          onDismissed: () {
+            _toastEntry?.remove();
+            _toastEntry = null;
+          },
+        ),
+      ),
+    );
+    Overlay.of(context, rootOverlay: true).insert(_toastEntry!);
+  }
+
   Future<void> _openMap() async {
     try {
       final coords = widget.coordinates.split(' - ');
       if (coords.length != 2) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid coordinates')));
+        _showToast('Invalid coordinates', ToastType.error);
         return;
       }
 
@@ -33,7 +61,7 @@ class _EventCardState extends State<EventCard> {
 
       if (latitude == null || longitude == null) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid coordinate format')));
+        _showToast('Invalid coordinate format', ToastType.error);
         return;
       }
 
@@ -42,31 +70,45 @@ class _EventCardState extends State<EventCard> {
       if (Platform.isAndroid) {
         final googleMapsUrl = 'google.navigation:q=$lat,$lng';
         if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
-          await launchUrl(Uri.parse(googleMapsUrl), mode: LaunchMode.externalApplication);
+          await launchUrl(
+            Uri.parse(googleMapsUrl),
+            mode: LaunchMode.externalApplication,
+          );
           launched = true;
         } else {
-          final geoUrl = 'geo:$lat,$lng?q=$lat,$lng(${Uri.encodeComponent(widget.location)})';
+          final geoUrl =
+              'geo:$lat,$lng?q=$lat,$lng(${Uri.encodeComponent(widget.location)})';
           if (await canLaunchUrl(Uri.parse(geoUrl))) {
-            await launchUrl(Uri.parse(geoUrl), mode: LaunchMode.externalApplication);
+            await launchUrl(
+              Uri.parse(geoUrl),
+              mode: LaunchMode.externalApplication,
+            );
             launched = true;
           }
         }
       } else if (Platform.isIOS) {
         final googleMapsUrl = 'comgooglemaps://?q=$lat,$lng';
         if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
-          await launchUrl(Uri.parse(googleMapsUrl), mode: LaunchMode.externalApplication);
+          await launchUrl(
+            Uri.parse(googleMapsUrl),
+            mode: LaunchMode.externalApplication,
+          );
           launched = true;
         } else {
           final appleMapsUrl = 'http://maps.apple.com/?q=$lat,$lng';
           if (await canLaunchUrl(Uri.parse(appleMapsUrl))) {
-            await launchUrl(Uri.parse(appleMapsUrl), mode: LaunchMode.externalApplication);
+            await launchUrl(
+              Uri.parse(appleMapsUrl),
+              mode: LaunchMode.externalApplication,
+            );
             launched = true;
           }
         }
       }
 
       if (!launched) {
-        final webUrl = 'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+        final webUrl =
+            'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
         final uri = Uri.parse(webUrl);
         if (await canLaunchUrl(uri)) {
           await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -75,11 +117,11 @@ class _EventCardState extends State<EventCard> {
       }
 
       if (!launched && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not open any map application.')));
+        _showToast('Could not open any map application.', ToastType.warning);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error opening map: $e')));
+        _showToast('Error opening map: $e', ToastType.error);
       }
     }
   }
@@ -87,7 +129,7 @@ class _EventCardState extends State<EventCard> {
   void _copyToClipboard(String text, String label) {
     Clipboard.setData(ClipboardData(text: text));
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$label copied!')));
+      _showToast('$label copied!', ToastType.info);
     }
   }
 
@@ -118,7 +160,10 @@ class _EventCardState extends State<EventCard> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.asset('assets/images/map.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                      'assets/images/map.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -132,15 +177,26 @@ class _EventCardState extends State<EventCard> {
                       children: [
                         const Text(
                           'Coordinates : ',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 10),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                          ),
                         ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: () => _copyToClipboard(widget.coordinates, 'Coordinates'),
+                            onTap: () => _copyToClipboard(
+                              widget.coordinates,
+                              'Coordinates',
+                            ),
                             child: Text(
                               widget.coordinates,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w700, fontSize: 10),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ),
@@ -151,15 +207,24 @@ class _EventCardState extends State<EventCard> {
                       children: [
                         const Text(
                           'Location : ',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 10),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                          ),
                         ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: () => _copyToClipboard(widget.location, 'Location'),
+                            onTap: () =>
+                                _copyToClipboard(widget.location, 'Location'),
                             child: Text(
                               widget.location,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w700, fontSize: 10),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ),
@@ -170,13 +235,21 @@ class _EventCardState extends State<EventCard> {
                       children: [
                         const Text(
                           'Time : ',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 10),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                          ),
                         ),
                         Flexible(
                           child: Text(
                             '${_formatDate(widget.dateTime ?? DateTime(2024, 12, 12, 16, 46))} | ${_formatTime(widget.dateTime ?? DateTime(2024, 12, 12, 16, 46))}',
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w700, fontSize: 10),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ],
@@ -211,7 +284,21 @@ class _EventCardState extends State<EventCard> {
   }
 
   String _monthName(int month) {
-    const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return months[month];
   }
 }

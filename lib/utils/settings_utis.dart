@@ -23,13 +23,6 @@ class SettingsService {
   int getFontSize() => prefs.getInt('font_size') ?? 16;
   Future<void> setFontSize(int value) async => await prefs.setInt('font_size', value);
 
-  // === PIN ===
-  bool hasPin() => prefs.containsKey('custom_pin');
-  String? getCustomPin() => prefs.getString('custom_pin');
-  Future<void> setCustomPin(String pin) async => await prefs.setString('custom_pin', pin);
-  Future<void> removeCustomPin() async => await prefs.remove('custom_pin');
-  Future<void> setPinKey(int pin) async => await prefs.setInt('pin_key', pin);
-
   // === Motion Sensitivity ===
   double getMotionSensitivity() => prefs.getDouble('motion_sensitivity') ?? 0.5;
   Future<void> setMotionSensitivity(double value) async => await prefs.setDouble('motion_sensitivity', value);

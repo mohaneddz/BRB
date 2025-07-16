@@ -28,12 +28,6 @@ class _SettingsState extends State<Settings> {
   bool _floatingNotificationsEnabled = true;
   final List<String> _languages = ['English', 'French'];
 
-  // Security
-  bool _customPinEnabled = false;
-  String _customPin = '';
-  final TextEditingController _pinController = TextEditingController();
-  bool _obscurePin = true;
-
   // Detection
   double _sensitivity = 0.5;
   int _detectionFrequency = 3;
@@ -42,7 +36,13 @@ class _SettingsState extends State<Settings> {
   bool _soundEnabled = true;
   bool _vibrateEnabled = true;
   String _selectedAlarmTone = 'Security Alert';
-  final List<String> _alarmTones = ['Security Alert', 'Siren', 'Loud Beep', 'Emergency', 'Classic Alarm'];
+  final List<String> _alarmTones = [
+    'Security Alert',
+    'Siren',
+    'Loud Beep',
+    'Emergency',
+    'Classic Alarm',
+  ];
 
   // Functions
   String _firebaseKey = '';
@@ -65,10 +65,8 @@ class _SettingsState extends State<Settings> {
     setState(() {
       _darkModeEnabled = _settingsService.getDarkMode();
       _selectedLanguage = lang;
-      _floatingNotificationsEnabled = _settingsService.getFloatingNotifications();
-      _customPinEnabled = _settingsService.hasPin();
-      _customPin = _settingsService.getCustomPin() ?? '';
-      _pinController.text = _customPin;
+      _floatingNotificationsEnabled = _settingsService
+          .getFloatingNotifications();
       _sensitivity = _settingsService.getMotionSensitivity();
       _detectionFrequency = _settingsService.getDetectionFrequency();
       _soundEnabled = _settingsService.isSoundEnabled();
@@ -84,7 +82,6 @@ class _SettingsState extends State<Settings> {
 
   @override
   void dispose() {
-    _pinController.dispose();
     super.dispose();
   }
 
@@ -102,7 +99,9 @@ class _SettingsState extends State<Settings> {
           iconTheme: const IconThemeData(color: Colors.white),
           elevation: 0,
         ),
-        body: const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+        body: const Center(
+          child: CircularProgressIndicator(color: AppColors.accent),
+        ),
       );
     }
     return Scaffold(
@@ -154,28 +153,6 @@ class _SettingsState extends State<Settings> {
               },
             ),
             const SizedBox(height: 24),
-
-            // Security
-            _buildSectionHeader('Security'),
-            CustomPinSection(
-              enabled: _customPinEnabled,
-              pinController: _pinController,
-              obscurePin: _obscurePin,
-              onToggle: (value) async {
-                setState(() => _customPinEnabled = value);
-                if (!value) {
-                  _pinController.clear();
-                  await _settingsService.removeCustomPin();
-                }
-              },
-              onToggleObscure: () => setState(() => _obscurePin = !_obscurePin),
-              onPinChanged: (pin) async {
-                setState(() => _customPin = pin);
-                await _settingsService.setCustomPin(pin);
-              },
-            ),
-            const SizedBox(height: 24),
-
             // Detection
             _buildSectionHeader('Detection'),
             SensitivitySliderSection(
@@ -259,18 +236,30 @@ class _SettingsState extends State<Settings> {
 
             // Support
             _buildSectionHeader('Support'),
-            ActionTile(title: 'Star on GitHub', subtitle: 'Help us grow by starring the project!', icon: LucideIcons.github, onTap: () => _showGitHubDialog()),
-            ActionTile(title: 'Report Issue', subtitle: 'Found a bug? Let us know', icon: LucideIcons.bug, onTap: () => _showReportDialog()),
-            ActionTile(title: 'Help & FAQ', subtitle: 'Get help using BRB', icon: LucideIcons.helpCircle, onTap: () => _showHelpDialog()),
+            ActionTile(
+              title: 'Star on GitHub',
+              subtitle: 'Help us grow by starring the project!',
+              icon: LucideIcons.github,
+              onTap: () => _showGitHubDialog(),
+            ),
+            ActionTile(
+              title: 'Report Issue',
+              subtitle: 'Found a bug? Let us know',
+              icon: LucideIcons.bug,
+              onTap: () => _showReportDialog(),
+            ),
+            ActionTile(
+              title: 'Help & FAQ',
+              subtitle: 'Get help using BRB',
+              icon: LucideIcons.helpCircle,
+              onTap: () => _showHelpDialog(),
+            ),
             const SizedBox(height: 24),
 
             // About
             _buildSectionHeader('About'),
             InfoTile(title: 'Version', value: '1.0.0'),
             InfoTile(title: 'Build', value: '2025.07.09'),
-            InfoTile(title: 'GitHub repo', value: 'github.com/yourrepo'),
-            InfoTile(title: 'Firebase Key', value: _firebaseKey.isNotEmpty ? _firebaseKey : 'Not set'),
-
             const SizedBox(height: 32),
           ],
         ),
@@ -283,7 +272,11 @@ class _SettingsState extends State<Settings> {
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Text(
         title,
-        style: const TextStyle(color: AppColors.accent, fontSize: 18, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: AppColors.accent,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -293,8 +286,14 @@ class _SettingsState extends State<Settings> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkBgLight,
-        title: const Text('Star on GitHub', style: TextStyle(color: Colors.white)),
-        content: const Text('Help us grow by starring the BRB project on GitHub! Your support means everything to us.', style: TextStyle(color: Colors.grey)),
+        title: const Text(
+          'Star on GitHub',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: const Text(
+          'Help us grow by starring the BRB project on GitHub! Your support means everything to us.',
+          style: TextStyle(color: Colors.grey),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -305,7 +304,10 @@ class _SettingsState extends State<Settings> {
               Navigator.pop(context);
               'https://github.com/mohaneddz/brb-flutter';
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.accent,
+              foregroundColor: Colors.white,
+            ),
             child: const Text('Star Now'),
           ),
         ],
@@ -318,8 +320,14 @@ class _SettingsState extends State<Settings> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkBgLight,
-        title: const Text('Report Issue', style: TextStyle(color: Colors.white)),
-        content: const Text('Found a bug or have a suggestion? We\'d love to hear from you!', style: TextStyle(color: Colors.grey)),
+        title: const Text(
+          'Report Issue',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: const Text(
+          'Found a bug or have a suggestion? We\'d love to hear from you!',
+          style: TextStyle(color: Colors.grey),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -330,7 +338,10 @@ class _SettingsState extends State<Settings> {
               Navigator.pop(context);
               'https://github.com/mohaneddz/brb-flutter/issues/new';
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.accent,
+              foregroundColor: Colors.white,
+            ),
             child: const Text('Report'),
           ),
         ],
@@ -344,7 +355,10 @@ class _SettingsState extends State<Settings> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkBgLight,
         title: const Text('Help & FAQ', style: TextStyle(color: Colors.white)),
-        content: const Text('Need help using BRB? Check out our documentation and frequently asked questions.', style: TextStyle(color: Colors.grey)),
+        content: const Text(
+          'Need help using BRB? Check out our documentation and frequently asked questions.',
+          style: TextStyle(color: Colors.grey),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -355,7 +369,10 @@ class _SettingsState extends State<Settings> {
               Navigator.pop(context);
               'https://github.com/mohaneddz/brb-flutter/wiki';
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.accent,
+              foregroundColor: Colors.white,
+            ),
             child: const Text('View Help'),
           ),
         ],

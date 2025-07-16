@@ -3,32 +3,40 @@ import 'package:brb/styles/style.dart';
 // Components:
 import 'package:brb/components/ui/content.dart';
 import 'package:brb/components/ui/navigation.dart';
-import 'package:flutter/rendering.dart';
-import 'package:brb/utils/movement_utils.dart';
+// import 'package:brb/utils/movement_utils.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _currentIndex = 0;
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sensor Dashboard Template',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.teal,
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF121212),
-        cardColor: const Color(0xFF1E1E1E),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(fontWeight: FontWeight.bold),
-          headlineMedium: TextStyle(fontWeight: FontWeight.bold),
+      debugShowCheckedModeBanner: false,
+      theme: primaryTheme, // Use your custom theme here
+      home: Scaffold(
+        body: Content(index: _currentIndex),
+        bottomNavigationBar: MyNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: _onTap,
         ),
       ),
-      home: const SensorDashboardPage(),
     );
   }
 }

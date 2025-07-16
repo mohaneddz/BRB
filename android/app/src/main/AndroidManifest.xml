@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <!-- PROXIMITY PERMISSIONS -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- Images -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:label="brb"
