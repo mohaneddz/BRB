@@ -4,7 +4,6 @@ import 'package:brb/utils/settings_utis.dart';
 
 import 'package:lucide_icons/lucide_icons.dart';
 
-import 'package:brb/components/settings/custom_pin_section.dart';
 import 'package:brb/components/settings/sensitivity_slider_section.dart';
 import 'package:brb/components/settings/detection_delay_slider_section.dart';
 import 'package:brb/components/settings/alarm_tone_selector_section.dart';

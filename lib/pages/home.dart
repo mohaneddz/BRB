@@ -27,14 +27,17 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.darkBgLight, title: Text(widget.title)),
+      appBar: AppBar(
+        backgroundColor: AppColors.darkBgLight,
+        title: Text(widget.title),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
           child: Column(
             children: [
               LooperButton(text: text, onClick: onClick),
-              // const SizedBox(height: 24), // Add spacing   
+              // const SizedBox(height: 24), // Add spacing
               const ConfigurationCard(),
             ],
           ),

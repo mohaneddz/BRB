@@ -4,24 +4,14 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 class PresetCard extends StatelessWidget {
   final String title;
-  final bool vibration;
-  final bool lock;
-  final double volume;
-  final double sound;
-  final String distance;
-  final String delay;
+  final String lastUsed;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
   const PresetCard({
     super.key,
     required this.title,
-    required this.vibration,
-    required this.lock,
-    required this.volume,
-    required this.sound,
-    required this.distance,
-    required this.delay,
+    required this.lastUsed,
     this.onEdit,
     this.onDelete,
   });
@@ -39,9 +29,26 @@ class PresetCard extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.grey),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Last used: $lastUsed',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.white70.withAlpha(40),
+                  ),
+                ),
+              ],
             ),
           ),
           Row(

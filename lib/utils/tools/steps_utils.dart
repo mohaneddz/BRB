@@ -28,9 +28,7 @@ class StepsService {
   void _onStepCount(StepCount event) {
     pedometerTimeoutTimer?.cancel();
     _currentSteps = event.steps;
-    if (_initialSteps == null) {
-      _initialSteps = event.steps;
-    }
+    _initialSteps ??= event.steps;
     steps = (_currentSteps! - (_initialSteps ?? 0)).toString();
     lastStepUpdate = DateTime.now();
     status = 'StepCount event received';
