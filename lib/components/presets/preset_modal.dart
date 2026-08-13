@@ -45,13 +45,13 @@ Future<void> showPresetModal({
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: AppColors.darkBgLight,
+    backgroundColor: AppColors.surface(context),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
     builder: (context) {
       return Container(
-        color: AppColors.darkBgLight,
+        color: AppColors.surface(context),
         child: Padding(
           padding: EdgeInsets.only(
             left: 16,
@@ -70,8 +70,8 @@ Future<void> showPresetModal({
                 ),
                 trackShape: const RoundedRectSliderTrackShape(),
               );
-              const valueTextStyle = TextStyle(
-                color: Colors.white70,
+              final valueTextStyle = TextStyle(
+                color: AppColors.secondaryText(context),
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
               );
@@ -82,10 +82,10 @@ Future<void> showPresetModal({
                   children: [
                     Text(
                       initialTitle == null ? 'Add Preset' : 'Edit Preset',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Colors.white,
+                        color: AppColors.primaryText(context),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -93,7 +93,7 @@ Future<void> showPresetModal({
                       controller: titleController,
                       decoration: InputDecoration(
                         labelText: 'Title',
-                        labelStyle: const TextStyle(color: Colors.white70),
+                        labelStyle: TextStyle(color: AppColors.secondaryText(context)),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.red),
                           borderRadius: BorderRadius.circular(8),
@@ -106,7 +106,7 @@ Future<void> showPresetModal({
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppColors.primaryText(context)),
                     ),
                     const SizedBox(height: 24),
 
@@ -115,7 +115,7 @@ Future<void> showPresetModal({
                       label: 'Mode',
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.darkBgLight, // darker background
+                          color: AppColors.background(context),
                           border: Border.all(color: Colors.red, width: 1.5),
                           borderRadius: BorderRadius.circular(6),
                         ),
@@ -132,8 +132,8 @@ Future<void> showPresetModal({
                                           value: m,
                                           child: Text(
                                             m,
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: AppColors.primaryText(context),
                                             ),
                                           ),
                                         ),
@@ -141,7 +141,7 @@ Future<void> showPresetModal({
                                       .toList(),
                                   onChanged: (val) =>
                                       setState(() => mode = val!),
-                                  dropdownColor: AppColors.darkBg,
+                                  dropdownColor: AppColors.dropdownSurface(context),
                                   icon:
                                       const SizedBox.shrink(), // hide default icon
                                 ),

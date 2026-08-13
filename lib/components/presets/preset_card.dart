@@ -29,7 +29,7 @@ class PresetCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Ink(
             decoration: BoxDecoration(
-              color: AppColors.darkBgLight,
+              color: AppColors.surface(context),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.red, width: 2),
             ),
@@ -53,7 +53,7 @@ class PresetCard extends StatelessWidget {
                         'Last used: $lastUsed',
                         style: TextStyle(
                           fontSize: 10,
-                          color: Colors.white70.withAlpha(40),
+                          color: AppColors.secondaryText(context),
                         ),
                       ),
                     ],
