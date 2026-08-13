@@ -171,11 +171,10 @@ class _PresetsState extends State<Presets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.darkBgLight,
         title: const Text('Presets'),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(LucideIcons.chevronLeft, color: Colors.white),
+          icon: const Icon(LucideIcons.chevronLeft),
           onPressed: () => Navigator.of(context).maybePop(),
           tooltip: 'Back',
         ),
@@ -185,11 +184,11 @@ class _PresetsState extends State<Presets> {
               child: CircularProgressIndicator(color: AppColors.accent),
             )
           : presets.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 'No presets yet.\nTap + to create one.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: AppColors.secondaryText(context)),
               ),
             )
           : ListView(

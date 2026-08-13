@@ -177,10 +177,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBgLight,
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: _loading
           ? const Center(
               child: CircularProgressIndicator(color: AppColors.accent),

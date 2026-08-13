@@ -35,10 +35,7 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('History'),
-      ),
+      appBar: AppBar(title: const Text('History')),
       body: _loading
           ? const Center(
               child: CircularProgressIndicator(color: AppColors.accent),
@@ -47,15 +44,15 @@ class _HistoryState extends State<History> {
               onRefresh: _load,
               child: _events.isEmpty
                   ? ListView(
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(top: 120),
+                          padding: const EdgeInsets.only(top: 120),
                           child: Center(
                             child: Text(
                               'No alarms yet.\nEvents show up here once BRB '
                               'is armed and triggers.',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(color: AppColors.secondaryText(context)),
                             ),
                           ),
                         ),
