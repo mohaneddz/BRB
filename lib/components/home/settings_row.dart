@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart'; // Add this import
 
 class MySettingRow extends StatelessWidget {
   final String label;

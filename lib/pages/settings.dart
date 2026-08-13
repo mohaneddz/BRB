@@ -54,7 +54,6 @@ class _SettingsState extends State<Settings> {
   ];
 
   // Functions
-  String _firebaseKey = '';
   bool _locationEnabled = true;
   bool _cameraEnabled = true;
   bool _microphoneEnabled = true;
@@ -84,7 +83,6 @@ class _SettingsState extends State<Settings> {
       _soundEnabled = _settingsService.isSoundEnabled();
       _vibrateEnabled = _settingsService.isVibrationEnabled();
       _selectedAlarmTone = _settingsService.getAlarmTone();
-      _firebaseKey = _settingsService.getFirebaseKey() ?? '';
       _locationEnabled = _settingsService.isLocationServiceEnabled();
       _cameraEnabled = _settingsService.isCameraAccessEnabled();
       _microphoneEnabled = _settingsService.isMicrophoneAccessEnabled();
