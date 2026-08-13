@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/utils/settings_utis.dart';
+import 'package:brb/utils/tools/pin_service.dart';
+import 'package:brb/utils/movement_utils.dart';
 
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -8,6 +12,7 @@ import 'package:brb/components/settings/sensitivity_slider_section.dart';
 import 'package:brb/components/settings/detection_delay_slider_section.dart';
 import 'package:brb/components/settings/alarm_tone_selector_section.dart';
 import 'package:brb/components/settings/language_selector_section.dart';
+import 'package:brb/components/settings/custom_pin_section.dart';
 import 'package:brb/components/settings/settings_tiles.dart';
 
 class Settings extends StatefulWidget {
@@ -19,7 +24,12 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final SettingsService _settingsService = SettingsService();
+  final PinService _pinService = PinService();
+  final TextEditingController _pinController = TextEditingController();
+  late final SharedPreferences _prefs;
   bool _isLoading = true;
+  bool _pinEnabled = false;
+  bool _pinObscured = true;
 
   // General
   bool _darkModeEnabled = false;
@@ -57,6 +67,9 @@ class _SettingsState extends State<Settings> {
 
   Future<void> _initializeSettings() async {
     await _settingsService.init();
+    _prefs = await SharedPreferences.getInstance();
+    _pinEnabled = _pinService.isEnabled(_prefs);
+    _pinController.text = _pinService.getPin(_prefs) ?? '';
     String lang = _settingsService.getLanguage();
     if (lang == 'en') lang = 'English';
     if (lang == 'fr') lang = 'French';
@@ -81,6 +94,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   void dispose() {
+    _pinController.dispose();
     super.dispose();
   }
 
@@ -202,6 +216,24 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 24),
 
+            // Security
+            _buildSectionHeader('Security'),
+            CustomPinSection(
+              enabled: _pinEnabled,
+              pinController: _pinController,
+              obscurePin: _pinObscured,
+              onToggle: (value) async {
+                setState(() => _pinEnabled = value);
+                await _pinService.setEnabled(_prefs, value);
+              },
+              onToggleObscure: () =>
+                  setState(() => _pinObscured = !_pinObscured),
+              onPinChanged: (value) async {
+                await _pinService.setPin(_prefs, value);
+              },
+            ),
+            const SizedBox(height: 24),
+
             // Functions
             _buildSectionHeader('Functions'),
             SwitchTile(
@@ -230,6 +262,14 @@ class _SettingsState extends State<Settings> {
                 await _settingsService.setMicrophoneAccessEnabled(value);
               },
               icon: LucideIcons.mic,
+            ),
+            ActionTile(
+              title: 'Sensor Diagnostics',
+              subtitle: 'Live readout of every sensor BRB uses',
+              icon: LucideIcons.activity,
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SensorDashboardPage()),
+              ),
             ),
             const SizedBox(height: 24),
 
@@ -299,9 +339,12 @@ class _SettingsState extends State<Settings> {
             child: const Text('Later', style: TextStyle(color: Colors.grey)),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              'https://github.com/mohaneddz/brb-flutter';
+              await launchUrl(
+                Uri.parse('https://github.com/mohaneddz/BRB'),
+                mode: LaunchMode.externalApplication,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.accent,
@@ -333,9 +376,12 @@ class _SettingsState extends State<Settings> {
             child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              'https://github.com/mohaneddz/brb-flutter/issues/new';
+              await launchUrl(
+                Uri.parse('https://github.com/mohaneddz/BRB/issues/new'),
+                mode: LaunchMode.externalApplication,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.accent,
@@ -364,9 +410,12 @@ class _SettingsState extends State<Settings> {
             child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              'https://github.com/mohaneddz/brb-flutter/wiki';
+              await launchUrl(
+                Uri.parse('https://github.com/mohaneddz/BRB#readme'),
+                mode: LaunchMode.externalApplication,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.accent,

@@ -9,8 +9,17 @@ class CustomPinSection extends StatelessWidget {
   final bool obscurePin;
   final ValueChanged<bool> onToggle;
   final VoidCallback onToggleObscure;
+  final ValueChanged<String> onPinChanged;
 
-  const CustomPinSection({super.key, required this.enabled, required this.pinController, required this.obscurePin, required this.onToggle, required this.onToggleObscure, required Future<Null> Function(dynamic pin) onPinChanged});
+  const CustomPinSection({
+    super.key,
+    required this.enabled,
+    required this.pinController,
+    required this.obscurePin,
+    required this.onToggle,
+    required this.onToggleObscure,
+    required this.onPinChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +60,7 @@ class CustomPinSection extends StatelessWidget {
                   ),
                 ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                onChanged: onPinChanged,
               ),
             ],
           ],
