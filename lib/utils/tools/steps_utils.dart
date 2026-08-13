@@ -4,6 +4,7 @@ import 'dart:async';
 class StepsService {
   void Function()? onUpdate;
   late Stream<StepCount> _stepCountStream;
+  StreamSubscription<StepCount>? _stepCountSub;
   int? _initialSteps;
   int? _currentSteps;
   String steps = '0';
@@ -14,8 +15,12 @@ class StepsService {
   StepsService({this.onUpdate});
 
   void start() {
+    _stepCountSub?.cancel();
     _stepCountStream = Pedometer.stepCountStream;
-    _stepCountStream.listen(_onStepCount).onError(_onStepCountError);
+    _stepCountSub = _stepCountStream.listen(
+      _onStepCount,
+      onError: _onStepCountError,
+    );
     status = 'Pedometer stream started';
     pedometerTimeoutTimer = Timer(const Duration(seconds: 10), () {
       if (steps == '0') {
@@ -49,5 +54,6 @@ class StepsService {
 
   void dispose() {
     pedometerTimeoutTimer?.cancel();
+    _stepCountSub?.cancel();
   }
 }
