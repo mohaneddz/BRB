@@ -1,16 +1,31 @@
-# brb
+<h1>
+  <img src="assets/images/logo.png" alt="BRB icon" width="42" />
+  BRB
+</h1>
 
-A new Flutter project.
+BRB is a Flutter safety companion that combines live location, motion and proximity sensors, camera access, configurable presets, and an event history in one mobile app.
+
+<p align="center">
+  <img src="assets/images/map.png" alt="BRB map asset" width="720" />
+</p>
+
+## Features
+
+- Live GPS tracking and location permission management
+- Motion, step, proximity, and orientation sensor monitoring
+- In-app camera preview and photo capture
+- Configurable safety presets and event history
+- Dark-mode, notification, sound, and vibration preferences
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Tech
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter · Dart · `geolocator` · `camera` · `sensors_plus` · `pedometer`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+> The project does not currently include a dedicated screenshot/design folder. The map above is an existing project visual asset; add device screenshots here when available.
