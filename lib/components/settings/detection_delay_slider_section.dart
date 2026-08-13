@@ -1,36 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:brb/styles/style.dart';
+import 'package:brb/components/settings/labeled_slider_section.dart';
 
+/// Same knob as Home's per-config "Delay" slider - both read/write the
+/// same persisted value, this is just a second, more discoverable place
+/// to tune it.
 class DetectionDelaySliderSection extends StatelessWidget {
-  final int detectionDelay;
-  final ValueChanged<int> onChanged;
+  final double detectionDelay;
+  final ValueChanged<double> onChanged;
 
   const DetectionDelaySliderSection({super.key, required this.detectionDelay, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppColors.darkBgLight,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Detection Delay',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
-            SliderTheme(
-              data: SliderTheme.of(
-                context,
-              ).copyWith(activeTrackColor: AppColors.accent, inactiveTrackColor: Colors.grey[700], thumbColor: AppColors.accent, overlayColor: AppColors.accent.withAlpha(2)),
-              child: Slider(value: detectionDelay.toDouble(), min: 1, max: 10, divisions: 9, label: '${detectionDelay}s', onChanged: (value) => onChanged(value.round())),
-            ),
-            Text('Trigger after: ${detectionDelay}s', style: const TextStyle(color: Colors.grey, fontSize: 12)),
-          ],
-        ),
-      ),
+    return LabeledSliderSection(
+      title: 'Detection Delay',
+      value: detectionDelay,
+      min: 0.5,
+      max: 10.0,
+      valueLabel: 'Trigger after: ${detectionDelay.toStringAsFixed(1)}s',
+      onChanged: onChanged,
     );
   }
 }

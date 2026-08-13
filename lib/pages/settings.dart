@@ -10,6 +10,8 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:brb/components/settings/sensitivity_slider_section.dart';
 import 'package:brb/components/settings/detection_delay_slider_section.dart';
+import 'package:brb/components/settings/steps_threshold_slider_section.dart';
+import 'package:brb/components/settings/max_distance_slider_section.dart';
 import 'package:brb/components/settings/alarm_tone_selector_section.dart';
 import 'package:brb/components/settings/language_selector_section.dart';
 import 'package:brb/components/settings/custom_pin_section.dart';
@@ -39,7 +41,9 @@ class _SettingsState extends State<Settings> {
 
   // Detection
   double _sensitivity = 0.5;
-  int _detectionFrequency = 3;
+  double _activeDelay = 1.0;
+  int _stepsThreshold = 3;
+  double _maxDistanceMeters = 5.0;
 
   // Alarm
   bool _soundEnabled = true;
@@ -79,7 +83,9 @@ class _SettingsState extends State<Settings> {
       _floatingNotificationsEnabled = _settingsService
           .getFloatingNotifications();
       _sensitivity = _settingsService.getMotionSensitivity();
-      _detectionFrequency = _settingsService.getDetectionFrequency();
+      _activeDelay = _settingsService.getActiveDelay();
+      _stepsThreshold = _settingsService.getStepsThreshold();
+      _maxDistanceMeters = _settingsService.getMaxDistanceMeters();
       _soundEnabled = _settingsService.isSoundEnabled();
       _vibrateEnabled = _settingsService.isVibrationEnabled();
       _selectedAlarmTone = _settingsService.getAlarmTone();
@@ -174,10 +180,24 @@ class _SettingsState extends State<Settings> {
               },
             ),
             DetectionDelaySliderSection(
-              detectionDelay: _detectionFrequency,
+              detectionDelay: _activeDelay,
               onChanged: (value) async {
-                setState(() => _detectionFrequency = value);
-                await _settingsService.setDetectionFrequency(value);
+                setState(() => _activeDelay = value);
+                await _settingsService.setActiveDelay(value);
+              },
+            ),
+            StepsThresholdSliderSection(
+              stepsThreshold: _stepsThreshold,
+              onChanged: (value) async {
+                setState(() => _stepsThreshold = value);
+                await _settingsService.setStepsThreshold(value);
+              },
+            ),
+            MaxDistanceSliderSection(
+              maxDistanceMeters: _maxDistanceMeters,
+              onChanged: (value) async {
+                setState(() => _maxDistanceMeters = value);
+                await _settingsService.setMaxDistanceMeters(value);
               },
             ),
             const SizedBox(height: 24),
