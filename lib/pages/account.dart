@@ -87,7 +87,7 @@ class _AccountState extends State<Account> {
             InfoSection(
               title: 'Personal Information',
               children: [
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.user,
                   title: 'Full Name',
                   subtitle: _fullName,
@@ -96,7 +96,7 @@ class _AccountState extends State<Account> {
                     await _settingsService.setFullName(value);
                   }),
                 ),
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.atSign,
                   title: 'Username',
                   subtitle: '@$_username',
@@ -105,7 +105,7 @@ class _AccountState extends State<Account> {
                     await _settingsService.setUsername(value);
                   }),
                 ),
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.mail,
                   title: 'Email',
                   subtitle: _email,
@@ -114,7 +114,7 @@ class _AccountState extends State<Account> {
                     await _settingsService.setEmail(value);
                   }),
                 ),
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.phone,
                   title: 'Phone Number',
                   subtitle: _phoneNumber,
@@ -123,7 +123,7 @@ class _AccountState extends State<Account> {
                     await _settingsService.setPhoneNumber(value);
                   }),
                 ),
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.fileText,
                   title: 'Bio',
                   subtitle: _bio,
@@ -132,7 +132,7 @@ class _AccountState extends State<Account> {
                     await _settingsService.setBio(value);
                   }),
                 ),
-                InfoTile(
+                ProfileInfoTile(
                   icon: LucideIcons.key,
                   title: 'Firebase Key',
                   subtitle: _firebaseKey.isNotEmpty ? _firebaseKey : 'Not set',
@@ -180,9 +180,9 @@ class _AccountState extends State<Account> {
             InfoSection(
               title: 'Quick Actions',
               children: [
-                ActionTile(icon: LucideIcons.settings, title: 'Settings', subtitle: 'App preferences and configuration', onTap: _navigateToSettings),
-                ActionTile(icon: LucideIcons.lock, title: 'Security', subtitle: 'Password and authentication', onTap: _navigateToSecurity),
-                ActionTile(icon: LucideIcons.shield, title: 'Privacy', subtitle: 'Privacy and data settings', onTap: _navigateToPrivacy),
+                ProfileActionTile(icon: LucideIcons.settings, title: 'Settings', subtitle: 'App preferences and configuration', onTap: _navigateToSettings),
+                ProfileActionTile(icon: LucideIcons.lock, title: 'Security', subtitle: 'Password and authentication', onTap: _navigateToSecurity),
+                ProfileActionTile(icon: LucideIcons.shield, title: 'Privacy', subtitle: 'Privacy and data settings', onTap: _navigateToPrivacy),
               ],
             ),
 
@@ -191,9 +191,9 @@ class _AccountState extends State<Account> {
             InfoSection(
               title: 'Support & Info',
               children: [
-                ActionTile(icon: LucideIcons.helpCircle, title: 'Help Center', subtitle: 'Get help and support', onTap: _showHelpCenter),
-                ActionTile(icon: LucideIcons.messageSquare, title: 'Send Feedback', subtitle: 'Share your thoughts with us', onTap: _showFeedbackDialog),
-                ActionTile(icon: LucideIcons.info, title: 'About', subtitle: 'App version and information', onTap: _showAboutDialog),
+                ProfileActionTile(icon: LucideIcons.helpCircle, title: 'Help Center', subtitle: 'Get help and support', onTap: _showHelpCenter),
+                ProfileActionTile(icon: LucideIcons.messageSquare, title: 'Send Feedback', subtitle: 'Share your thoughts with us', onTap: _showFeedbackDialog),
+                ProfileActionTile(icon: LucideIcons.info, title: 'About', subtitle: 'App version and information', onTap: _showAboutDialog),
               ],
             ),
 

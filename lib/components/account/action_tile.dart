@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class ActionTile extends StatelessWidget {
+/// Account-page action row: icon chip + title/subtitle + chevron.
+///
+/// Named distinctly from settings_tiles.dart's ActionTile, which is a
+/// different (Card+ListTile) implementation used on the Settings page -
+/// same name, different widget, was a maintenance trap.
+class ProfileActionTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
   final VoidCallback onTap;
-  const ActionTile({super.key, required this.icon, required this.title, required this.subtitle, required this.onTap});
+  const ProfileActionTile({super.key, required this.icon, required this.title, required this.subtitle, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
