@@ -140,8 +140,12 @@ class _PresetsState extends State<Presets> {
         double.tryParse(preset.delay.replaceAll('s', '')) ?? 1.0;
     final distanceMeters =
         double.tryParse(preset.distance.replaceAll('m', '')) ?? 1.0;
-    // Inverse of the 0.5-5m mapping ConfigurationCard's Grace slider uses.
-    final grace = ((distanceMeters - 0.5) / 4.5).clamp(0.0, 1.0);
+    // Inverse of the grace * maxDistanceMeters mapping Home uses for
+    // Distant mode - keep in sync with DetectionService arming in home.dart.
+    final maxDistance = _settingsService.getMaxDistanceMeters();
+    final grace = maxDistance > 0
+        ? (distanceMeters / maxDistance).clamp(0.0, 1.0)
+        : 0.0;
 
     await _settingsService.setActiveMode(preset.mode);
     await _settingsService.setActiveDelay(delaySeconds);

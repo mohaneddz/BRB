@@ -146,7 +146,9 @@ class _HomeState extends State<Home> {
       mode: detectionModeFromLabel(_config.mode),
       sensitivity: _settingsService.getMotionSensitivity(),
       detectionDelaySeconds: _config.delay.round().clamp(1, 999),
-      distanceThresholdMeters: 0.5 + _config.grace * 4.5,
+      distanceThresholdMeters:
+          _config.grace * _settingsService.getMaxDistanceMeters(),
+      stepsThreshold: _settingsService.getStepsThreshold(),
     );
     if (!mounted) return;
     setState(() => _armed = true);
