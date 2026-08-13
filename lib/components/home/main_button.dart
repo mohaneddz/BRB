@@ -68,7 +68,10 @@ class _LooperButtonState extends State<LooperButton> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
                 child: SvgPicture.asset(
                   'assets/svgs/Looper.svg',
-                  width: MediaQuery.of(context).size.width - 40,
+                  width: (MediaQuery.of(context).size.width - 40).clamp(
+                    0.0,
+                    double.infinity,
+                  ),
                   colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
                 ),
               ),
