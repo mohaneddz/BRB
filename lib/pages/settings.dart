@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/pin_service.dart';
+import 'package:brb/utils/theme_controller.dart';
 import 'package:brb/utils/movement_utils.dart';
 
 import 'package:lucide_icons/lucide_icons.dart';
@@ -39,7 +40,7 @@ class _SettingsState extends State<Settings> {
   bool _pinObscured = true;
 
   // General
-  bool _darkModeEnabled = false;
+  bool _darkModeEnabled = true;
   String _selectedLanguage = 'English';
   bool _floatingNotificationsEnabled = true;
   final List<String> _languages = ['English', 'French'];
@@ -151,6 +152,9 @@ class _SettingsState extends State<Settings> {
               value: _darkModeEnabled,
               onChanged: (value) async {
                 setState(() => _darkModeEnabled = value);
+                themeModeNotifier.value = value
+                    ? ThemeMode.dark
+                    : ThemeMode.light;
                 await _settingsService.setDarkMode(value);
               },
               icon: LucideIcons.moon,

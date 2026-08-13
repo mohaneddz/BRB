@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:brb/styles/style.dart';
+import 'package:brb/utils/settings_utis.dart';
+import 'package:brb/utils/theme_controller.dart';
 // Components:
 import 'package:brb/components/ui/content.dart';
 import 'package:brb/components/ui/navigation.dart';
-// import 'package:brb/utils/movement_utils.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final settingsService = SettingsService();
+  await settingsService.init();
+  themeModeNotifier.value = settingsService.getDarkMode()
+      ? ThemeMode.dark
+      : ThemeMode.light;
   runApp(const MyApp());
 }
 
@@ -27,16 +34,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: primaryTheme, // Use your custom theme here
-      home: Scaffold(
-        body: Content(index: _currentIndex),
-        bottomNavigationBar: MyNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onTap,
-        ),
-      ),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeModeNotifier,
+      builder: (context, mode, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: primaryTheme,
+          themeMode: mode,
+          home: Scaffold(
+            body: Content(index: _currentIndex),
+            bottomNavigationBar: MyNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: _onTap,
+            ),
+          ),
+        );
+      },
     );
   }
 }

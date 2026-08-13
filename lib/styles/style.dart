@@ -294,6 +294,283 @@ final ThemeData primaryTheme = ThemeData(
   ),
 );
 
+/// Light-mode counterpart to [primaryTheme], toggled via Settings' Dark
+/// Mode switch. Mirrors the same structure with backgrounds/text flipped;
+/// the red brand accent stays constant in both.
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: AppColors.primary,
+    onPrimary: AppColors.enabledText,
+    secondary: AppColors.primary,
+    onSecondary: AppColors.enabledText,
+    error: AppColors.primary,
+    onError: AppColors.enabledText,
+    surface: AppColors.lightBg,
+    onSurface: AppColors.foreground,
+  ),
+
+  scaffoldBackgroundColor: AppColors.lightBg,
+
+  textTheme: TextTheme(
+    displayLarge: GoogleFonts.kumarOne(
+      fontSize: 57,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    displayMedium: GoogleFonts.kumarOne(
+      fontSize: 45,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    displaySmall: GoogleFonts.kumarOne(
+      fontSize: 36,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    headlineLarge: GoogleFonts.kumarOne(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    headlineMedium: GoogleFonts.kumarOne(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    headlineSmall: GoogleFonts.kumarOne(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    titleLarge: GoogleFonts.kumarOne(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    titleMedium: GoogleFonts.kumarOne(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: AppColors.foreground,
+    ),
+    titleSmall: GoogleFonts.kumarOne(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: AppColors.foreground,
+    ),
+    bodyLarge: GoogleFonts.kumarOne(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: AppColors.lightDisabledText,
+    ),
+    bodyMedium: GoogleFonts.kumarOne(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: AppColors.lightDisabledText,
+    ),
+    bodySmall: GoogleFonts.kumarOne(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: AppColors.lightDisabledText,
+    ),
+    labelLarge: GoogleFonts.kumarOne(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: AppColors.foreground,
+    ),
+    labelMedium: GoogleFonts.kumarOne(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: AppColors.foreground,
+    ),
+    labelSmall: GoogleFonts.kumarOne(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: AppColors.foreground,
+    ),
+  ),
+
+  appBarTheme: const AppBarTheme(
+    surfaceTintColor: AppColors.lightBg,
+    backgroundColor: AppColors.lightBgLight,
+    foregroundColor: AppColors.foreground,
+    elevation: 0,
+    centerTitle: true,
+  ),
+
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: AppColors.enabledText,
+      backgroundColor: AppColors.primary,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      textStyle: GoogleFonts.kumarOne(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: AppColors.primary,
+      textStyle: GoogleFonts.kumarOne(fontSize: 16),
+    ),
+  ),
+
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: AppColors.primary,
+      side: const BorderSide(color: AppColors.primary),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      textStyle: GoogleFonts.kumarOne(fontSize: 16),
+    ),
+  ),
+
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: AppColors.lightBgLight,
+    labelStyle: GoogleFonts.kumarOne(color: AppColors.lightDisabledText),
+    hintStyle: GoogleFonts.kumarOne(color: AppColors.lightDisabledText),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: AppColors.lightDisabledText, width: 1),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+    ),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  ),
+
+  cardTheme: CardThemeData(
+    color: AppColors.lightBgLight,
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    margin: const EdgeInsets.all(8),
+  ),
+
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: AppColors.lightBg,
+    selectedItemColor: AppColors.primary,
+    unselectedItemColor: AppColors.lightDisabledText,
+    selectedIconTheme: IconThemeData(color: AppColors.primary, size: 24),
+    unselectedIconTheme: IconThemeData(
+      color: AppColors.lightDisabledText,
+      size: 24,
+    ),
+    selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+    unselectedLabelStyle: TextStyle(
+      fontWeight: FontWeight.normal,
+      fontSize: 10,
+    ),
+    type: BottomNavigationBarType.fixed,
+  ),
+
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) return AppColors.primary;
+      return AppColors.lightBgLight;
+    }),
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primary.withValues(alpha: 0.5);
+      }
+      return AppColors.lightBgLightDropdown;
+    }),
+  ),
+
+  sliderTheme: SliderThemeData(
+    activeTrackColor: AppColors.primary,
+    inactiveTrackColor: AppColors.lightDisabledText,
+    thumbColor: AppColors.primary,
+    overlayColor: AppColors.primary.withValues(alpha: 0.5),
+    valueIndicatorColor: AppColors.primary,
+    valueIndicatorTextStyle: GoogleFonts.kumarOne(color: AppColors.enabledText),
+  ),
+
+  dialogTheme: DialogThemeData(
+    backgroundColor: AppColors.lightBg,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    titleTextStyle: GoogleFonts.kumarOne(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: AppColors.foreground,
+    ),
+    contentTextStyle: GoogleFonts.kumarOne(
+      fontSize: 16,
+      color: AppColors.lightDisabledText,
+    ),
+  ),
+
+  checkboxTheme: CheckboxThemeData(
+    fillColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) return AppColors.primary;
+      return AppColors.lightBgLight;
+    }),
+    checkColor: WidgetStateProperty.all(AppColors.enabledText),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+  ),
+
+  radioTheme: RadioThemeData(
+    fillColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) return AppColors.primary;
+      return AppColors.lightDisabledText;
+    }),
+  ),
+
+  tooltipTheme: TooltipThemeData(
+    decoration: BoxDecoration(
+      color: AppColors.lightBgLight.withValues(alpha: 0.95),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    textStyle: GoogleFonts.kumarOne(color: AppColors.foreground, fontSize: 12),
+  ),
+
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: AppColors.lightBgLight,
+    contentTextStyle: GoogleFonts.kumarOne(color: AppColors.foreground),
+    actionTextColor: AppColors.primary,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    behavior: SnackBarBehavior.floating,
+  ),
+
+  tabBarTheme: TabBarThemeData(
+    labelColor: AppColors.primary,
+    unselectedLabelColor: AppColors.lightDisabledText,
+    indicator: const UnderlineTabIndicator(
+      borderSide: BorderSide(color: AppColors.primary, width: 3.0),
+    ),
+    labelStyle: GoogleFonts.kumarOne(fontWeight: FontWeight.bold),
+    unselectedLabelStyle: GoogleFonts.kumarOne(),
+  ),
+
+  dividerTheme: const DividerThemeData(
+    color: AppColors.lightDisabledText,
+    thickness: 1,
+    space: 16,
+  ),
+
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primary,
+    foregroundColor: AppColors.enabledText,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
+  ),
+);
+
 /// Public class to hold all custom color definitions for better organization.
 class AppColors {
   static const Color darkBg = Color(
@@ -311,6 +588,10 @@ class AppColors {
   static const Color lightBg = Color(
     0xFFFFFFFF,
   ); // Light background for light mode.
+  static const Color lightBgLight = Color(
+    0xFFF1F0EE,
+  ); // Card/surface background for light mode.
+  static const Color lightBgLightDropdown = Color(0xFFE7E6E4);
   static const Color primary = Color(0xFFF8231C); // Primary accent color.
   static const Color accent = Color.fromARGB(
     255,
@@ -322,7 +603,31 @@ class AppColors {
     0xFF181816,
   ); // Foreground (text/icons on light bg).
   static const Color disabledText = Color(0xFF696969); // Disabled text color.
+  static const Color lightDisabledText = Color(
+    0xFF8A8A88,
+  ); // Disabled/secondary text color for light mode.
   static const Color enabledText = Color(
     0xFFFFFFFF,
   ); // Enabled/primary text color.
+
+  // --- Theme-aware accessors: use these instead of the raw constants above
+  // in any widget that should look right in both Dark Mode and Light Mode.
+  static Color background(BuildContext context) =>
+      Theme.of(context).scaffoldBackgroundColor;
+
+  static Color surface(BuildContext context) =>
+      Theme.of(context).cardTheme.color ?? Theme.of(context).cardColor;
+
+  static Color dropdownSurface(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkBgLightDropdown
+      : lightBgLightDropdown;
+
+  static Color primaryText(BuildContext context) =>
+      Theme.of(context).colorScheme.onSurface;
+
+  static Color secondaryText(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? disabledText
+      : lightDisabledText;
 }
