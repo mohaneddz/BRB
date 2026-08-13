@@ -114,14 +114,11 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: AppColors.darkBg,
         appBar: AppBar(
-          backgroundColor: AppColors.darkBgLight,
           title: const Text(
             'Settings',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
           elevation: 0,
         ),
         body: const Center(
@@ -130,14 +127,8 @@ class _SettingsState extends State<Settings> {
       );
     }
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
       appBar: AppBar(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -379,19 +370,14 @@ class _SettingsState extends State<Settings> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text(
-          'Star on GitHub',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text('Star on GitHub'),
         content: const Text(
           'Help us grow by starring the BRB project on GitHub! Your support means everything to us.',
-          style: TextStyle(color: Colors.grey),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Later', style: TextStyle(color: Colors.grey)),
+            child: Text('Later', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -416,19 +402,14 @@ class _SettingsState extends State<Settings> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text(
-          'Report Issue',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text('Report Issue'),
         content: const Text(
           'Found a bug or have a suggestion? We\'d love to hear from you!',
-          style: TextStyle(color: Colors.grey),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -453,16 +434,14 @@ class _SettingsState extends State<Settings> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Help & FAQ', style: TextStyle(color: Colors.white)),
+        title: const Text('Help & FAQ'),
         content: const Text(
           'Need help using BRB? Check out our documentation and frequently asked questions.',
-          style: TextStyle(color: Colors.grey),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           ElevatedButton(
             onPressed: () async {
