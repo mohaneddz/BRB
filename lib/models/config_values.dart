@@ -1,0 +1,49 @@
+class ConfigValues {
+  final String mode;
+  final double delay;
+  final double grace;
+  final bool camera;
+  final bool location;
+  final double sound;
+  final bool vibration;
+
+  const ConfigValues({
+    required this.mode,
+    required this.delay,
+    required this.grace,
+    required this.camera,
+    required this.location,
+    required this.sound,
+    required this.vibration,
+  });
+
+  static const defaults = ConfigValues(
+    mode: 'Pocket',
+    delay: 1.0,
+    grace: 0.5,
+    camera: false,
+    location: false,
+    sound: 0.5,
+    vibration: true,
+  );
+
+  ConfigValues copyWith({
+    String? mode,
+    double? delay,
+    double? grace,
+    bool? camera,
+    bool? location,
+    double? sound,
+    bool? vibration,
+  }) {
+    return ConfigValues(
+      mode: mode ?? this.mode,
+      delay: delay ?? this.delay,
+      grace: grace ?? this.grace,
+      camera: camera ?? this.camera,
+      location: location ?? this.location,
+      sound: sound ?? this.sound,
+      vibration: vibration ?? this.vibration,
+    );
+  }
+}
