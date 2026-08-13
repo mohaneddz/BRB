@@ -3,26 +3,78 @@ import 'package:brb/styles/style.dart';
 import 'package:flutter/material.dart';
 import 'package:brb/components/ui/dropdown.dart';
 import 'package:brb/components/home/settings_row.dart';
-import 'package:brb/pages/presets.dart';
+import 'package:brb/models/config_values.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class ConfigurationCard extends StatefulWidget {
-  const ConfigurationCard({super.key});
+  final ConfigValues initialValues;
+  final ValueChanged<ConfigValues> onChanged;
+  final VoidCallback onOpenPresets;
+  final bool locked;
+
+  const ConfigurationCard({
+    super.key,
+    required this.initialValues,
+    required this.onChanged,
+    required this.onOpenPresets,
+    this.locked = false,
+  });
 
   @override
   State<ConfigurationCard> createState() => ConfigurationCardState();
 }
 
 class ConfigurationCardState extends State<ConfigurationCard> {
-  bool vibration = true;
-  bool camera = false;
-  bool location = false;
-  double delay = 1.0;
-  double grace = 0.5;
-  double sound = 0.5;
-  String mode = 'Pocket';
+  late bool vibration;
+  late bool camera;
+  late bool location;
+  late double delay;
+  late double grace;
+  late double sound;
+  late String mode;
 
   final List<String> modes = ['Pocket', 'Sensitive', 'Distant', 'Steps'];
+
+  @override
+  void initState() {
+    super.initState();
+    _applyFrom(widget.initialValues);
+  }
+
+  void _applyFrom(ConfigValues values) {
+    mode = values.mode;
+    delay = values.delay;
+    grace = values.grace;
+    camera = values.camera;
+    location = values.location;
+    sound = values.sound;
+    vibration = values.vibration;
+  }
+
+  /// Called by the Home screen after a Preset was applied elsewhere, so the
+  /// card reflects the new values without a full rebuild.
+  void applyValues(ConfigValues values) {
+    setState(() => _applyFrom(values));
+  }
+
+  void _emitChange() {
+    widget.onChanged(
+      ConfigValues(
+        mode: mode,
+        delay: delay,
+        grace: grace,
+        camera: camera,
+        location: location,
+        sound: sound,
+        vibration: vibration,
+      ),
+    );
+  }
+
+  void _update(VoidCallback mutate) {
+    setState(mutate);
+    _emitChange();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +128,10 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                     child: MyDropdown(
                       value: mode,
                       items: modes,
-                      onChanged: (val) => setState(() => mode = val!),
+                      onChanged: (val) {
+                        if (widget.locked || val == null) return;
+                        _update(() => mode = val);
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -95,13 +150,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                         LucideIcons.slidersHorizontal,
                         color: Colors.white,
                       ),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const Presets(),
-                          ),
-                        );
-                      },
+                      onPressed: widget.onOpenPresets,
                     ),
                   ),
                 ],
@@ -131,8 +180,10 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                                     value: delay,
                                     min: 0.5,
                                     max: 10.0,
-                                    onChanged: (val) =>
-                                        setState(() => delay = val),
+                                    onChanged: widget.locked
+                                        ? null
+                                        : (val) =>
+                                              _update(() => delay = val),
                                     activeColor: Colors.red,
                                     inactiveColor: Colors.red.withAlpha(50),
                                   ),
@@ -161,8 +212,10 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                                   data: sliderThemeData,
                                   child: Slider(
                                     value: grace,
-                                    onChanged: (val) =>
-                                        setState(() => grace = val),
+                                    onChanged: widget.locked
+                                        ? null
+                                        : (val) =>
+                                              _update(() => grace = val),
                                     activeColor: Colors.red,
                                     inactiveColor: Colors.red.withAlpha(50),
                                   ),
@@ -187,7 +240,9 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                           inline: true,
                           child: Checkbox(
                             value: camera,
-                            onChanged: (val) => setState(() => camera = val!),
+                            onChanged: widget.locked
+                                ? null
+                                : (val) => _update(() => camera = val!),
                             activeColor: Colors.red,
                             checkColor: Colors.white,
                             side: const BorderSide(
@@ -228,8 +283,10 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                                   data: sliderThemeData,
                                   child: Slider(
                                     value: sound,
-                                    onChanged: (val) =>
-                                        setState(() => sound = val),
+                                    onChanged: widget.locked
+                                        ? null
+                                        : (val) =>
+                                              _update(() => sound = val),
                                     activeColor: Colors.red,
                                     inactiveColor: Colors.red.withAlpha(50),
                                   ),
@@ -259,8 +316,11 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                                   child: Slider(
                                     value: vibration ? 1.0 : 0.0,
                                     divisions: 1,
-                                    onChanged: (val) =>
-                                        setState(() => vibration = val > 0.5),
+                                    onChanged: widget.locked
+                                        ? null
+                                        : (val) => _update(
+                                            () => vibration = val > 0.5,
+                                          ),
                                     activeColor: Colors.red,
                                     inactiveColor: Colors.red.withAlpha(50),
                                   ),
@@ -285,7 +345,9 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                           inline: true,
                           child: Checkbox(
                             value: location,
-                            onChanged: (val) => setState(() => location = val!),
+                            onChanged: widget.locked
+                                ? null
+                                : (val) => _update(() => location = val!),
                             activeColor: Colors.red,
                             checkColor: Colors.white,
                             side: const BorderSide(
