@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:brb/styles/style.dart';
@@ -13,6 +17,7 @@ import 'package:brb/components/settings/detection_delay_slider_section.dart';
 import 'package:brb/components/settings/steps_threshold_slider_section.dart';
 import 'package:brb/components/settings/max_distance_slider_section.dart';
 import 'package:brb/components/settings/alarm_tone_selector_section.dart';
+import 'package:brb/components/settings/alarm_sound_picker_section.dart';
 import 'package:brb/components/settings/language_selector_section.dart';
 import 'package:brb/components/settings/custom_pin_section.dart';
 import 'package:brb/components/settings/settings_tiles.dart';
@@ -49,6 +54,7 @@ class _SettingsState extends State<Settings> {
   bool _soundEnabled = true;
   bool _vibrateEnabled = true;
   String _selectedAlarmTone = 'Security Alert';
+  String? _customToneName;
   final List<String> _alarmTones = [
     'Security Alert',
     'Siren',
@@ -89,6 +95,7 @@ class _SettingsState extends State<Settings> {
       _soundEnabled = _settingsService.isSoundEnabled();
       _vibrateEnabled = _settingsService.isVibrationEnabled();
       _selectedAlarmTone = _settingsService.getAlarmTone();
+      _customToneName = _settingsService.getAlarmToneName();
       _locationEnabled = _settingsService.isLocationServiceEnabled();
       _cameraEnabled = _settingsService.isCameraAccessEnabled();
       _microphoneEnabled = _settingsService.isMicrophoneAccessEnabled();
@@ -214,6 +221,11 @@ class _SettingsState extends State<Settings> {
                 }
               },
             ),
+            AlarmSoundPickerSection(
+              customToneName: _customToneName,
+              onPickFile: _pickAlarmSound,
+              onClear: _clearAlarmSound,
+            ),
             SwitchTile(
               title: 'Sound Enabled',
               value: _soundEnabled,
@@ -322,6 +334,27 @@ class _SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickAlarmSound() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.audio);
+    final picked = result?.files.single;
+    if (picked == null || picked.path == null) return;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final ext = picked.extension != null ? '.${picked.extension}' : '';
+    final fileName = 'alarm_tone_${DateTime.now().millisecondsSinceEpoch}$ext';
+    final saved = await File(picked.path!).copy('${appDir.path}/$fileName');
+
+    await _settingsService.setAlarmTonePath(saved.path, picked.name);
+    if (!mounted) return;
+    setState(() => _customToneName = picked.name);
+  }
+
+  Future<void> _clearAlarmSound() async {
+    await _settingsService.clearAlarmTonePath();
+    if (!mounted) return;
+    setState(() => _customToneName = null);
   }
 
   Widget _buildSectionHeader(String title) {
