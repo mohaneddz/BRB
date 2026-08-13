@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:brb/components/ui/toast.dart'; // <-- Add this import
+import 'package:brb/styles/style.dart';
 
 class EventCard extends StatefulWidget {
   final String coordinates;
@@ -137,7 +138,7 @@ class _EventCardState extends State<EventCard> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF181818),
+        color: AppColors.surface(context),
         border: Border.all(color: Colors.redAccent, width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -175,10 +176,10 @@ class _EventCardState extends State<EventCard> {
                   children: [
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           'Coordinates : ',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primaryText(context),
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
                           ),
@@ -192,8 +193,8 @@ class _EventCardState extends State<EventCard> {
                             child: Text(
                               widget.coordinates,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.grey,
+                              style: TextStyle(
+                                color: AppColors.secondaryText(context),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 10,
                               ),
@@ -205,10 +206,10 @@ class _EventCardState extends State<EventCard> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           'Location : ',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primaryText(context),
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
                           ),
@@ -220,8 +221,8 @@ class _EventCardState extends State<EventCard> {
                             child: Text(
                               widget.location,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.grey,
+                              style: TextStyle(
+                                color: AppColors.secondaryText(context),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 10,
                               ),
@@ -233,10 +234,10 @@ class _EventCardState extends State<EventCard> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           'Time : ',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primaryText(context),
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
                           ),
