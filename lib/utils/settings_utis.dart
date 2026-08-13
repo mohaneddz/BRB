@@ -7,8 +7,8 @@ class SettingsService {
     prefs = await SharedPreferences.getInstance();
   }
 
-  // === Dark Mode ===
-  bool getDarkMode() => prefs.getBool('dark_mode') ?? false;
+  // === Dark Mode === (app ships dark-by-default; toggling off switches to light)
+  bool getDarkMode() => prefs.getBool('dark_mode') ?? true;
   Future<void> setDarkMode(bool value) async => await prefs.setBool('dark_mode', value);
 
   // === Language ===
@@ -26,10 +26,14 @@ class SettingsService {
   // === Motion Sensitivity ===
   double getMotionSensitivity() => prefs.getDouble('motion_sensitivity') ?? 0.5;
   Future<void> setMotionSensitivity(double value) async => await prefs.setDouble('motion_sensitivity', value);
-  // === Detection Frequency (Frames) ===
-  int getDetectionFrequency() => prefs.getInt('detection_frequency') ?? 3;
-  Future<void> setDetectionFrequency(int value) async => await prefs.setInt('detection_frequency', value);
-  Future<void> setDetectionFrames(int value) async => await prefs.setInt('detection_frames', value);
+
+  // === Steps Threshold (Steps mode) ===
+  int getStepsThreshold() => prefs.getInt('steps_threshold') ?? 3;
+  Future<void> setStepsThreshold(int value) async => await prefs.setInt('steps_threshold', value);
+
+  // === Max Distance in meters (Distant mode's Grace slider maps 0..1 onto 0..this) ===
+  double getMaxDistanceMeters() => prefs.getDouble('max_distance_meters') ?? 5.0;
+  Future<void> setMaxDistanceMeters(double value) async => await prefs.setDouble('max_distance_meters', value);
 
   // === Sound Enabled ===
   bool isSoundEnabled() => prefs.getBool('sound_enabled') ?? true;
@@ -41,6 +45,20 @@ class SettingsService {
   // === Alarm Tone ===
   String getAlarmTone() => prefs.getString('alarm_tone') ?? 'Security Alert';
   Future<void> setAlarmTone(String value) async => await prefs.setString('alarm_tone', value);
+
+  // === Custom Alarm Sound (picked from device files/ringtones) ===
+  // When set, takes priority over the built-in alarm_tone selection.
+  String? getAlarmTonePath() => prefs.getString('alarm_tone_path');
+  String? getAlarmToneName() => prefs.getString('alarm_tone_path_name');
+  Future<void> setAlarmTonePath(String path, String displayName) async {
+    await prefs.setString('alarm_tone_path', path);
+    await prefs.setString('alarm_tone_path_name', displayName);
+  }
+
+  Future<void> clearAlarmTonePath() async {
+    await prefs.remove('alarm_tone_path');
+    await prefs.remove('alarm_tone_path_name');
+  }
 
   // === Firebase Key ===
   String? getFirebaseKey() => prefs.getString('firebase_key');
