@@ -52,7 +52,7 @@ class DetectionService {
   double _sensitivity = 0.5;
   int _detectionDelaySeconds = 3;
   double _distanceThresholdMeters = 2.0;
-  static const _stepsThreshold = 3;
+  int _stepsThreshold = 3;
 
   DateTime? _overThresholdSince;
   bool? _lastNear;
@@ -70,11 +70,13 @@ class DetectionService {
     required double sensitivity,
     required int detectionDelaySeconds,
     required double distanceThresholdMeters,
+    int stepsThreshold = 3,
   }) async {
     _mode = mode;
     _sensitivity = sensitivity.clamp(0.0, 1.0);
     _detectionDelaySeconds = detectionDelaySeconds;
     _distanceThresholdMeters = distanceThresholdMeters;
+    _stepsThreshold = stepsThreshold;
     _overThresholdSince = null;
     _lastNear = null;
     _fired = false;
