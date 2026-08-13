@@ -48,12 +48,10 @@ class _AccountState extends State<Account> {
         _loadProfile();
       });
       return Scaffold(
-        backgroundColor: AppColors.darkBg,
         appBar: AppBar(
-          backgroundColor: AppColors.darkBgLight,
-          title: const Text('Account', style: TextStyle(color: Colors.white)),
+          title: const Text('Account'),
           leading: IconButton(
-            icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
+            icon: const Icon(LucideIcons.arrowLeft),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -62,17 +60,15 @@ class _AccountState extends State<Account> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
       appBar: AppBar(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Account', style: TextStyle(color: Colors.white)),
+        title: const Text('Account'),
         leading: IconButton(
-          icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.edit, color: Colors.white),
+            icon: const Icon(LucideIcons.edit),
             onPressed: () => _showEditProfileDialog(),
           ),
         ],
@@ -141,20 +137,15 @@ class _AccountState extends State<Account> {
                     String? newKey = await showDialog<String>(
                       context: context,
                       builder: (dialogContext) => AlertDialog(
-                        backgroundColor: AppColors.darkBgLight,
-                        title: const Text('Edit Firebase Key', style: TextStyle(color: Colors.white)),
+                        title: const Text('Edit Firebase Key'),
                         content: TextField(
                           controller: controller,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Enter Firebase Key',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+                          decoration: const InputDecoration(hintText: 'Enter Firebase Key'),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(dialogContext),
-                            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+                            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(dialogContext))),
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -226,13 +217,12 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Edit Profile', style: TextStyle(color: Colors.white)),
-        content: const Text('Full profile editing functionality would go here.', style: TextStyle(color: Colors.grey)),
+        title: const Text('Edit Profile'),
+        content: const Text('Full profile editing functionality would go here.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -248,22 +238,15 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: Text('Edit $field', style: const TextStyle(color: Colors.white)),
+        title: Text('Edit $field'),
         content: TextField(
           controller: controller,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: 'Enter $field',
-            hintStyle: const TextStyle(color: Colors.grey),
-            enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.redAccent)),
-          ),
+          decoration: InputDecoration(hintText: 'Enter $field'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           TextButton(
             onPressed: () {
@@ -296,9 +279,8 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Help Center', style: TextStyle(color: Colors.white)),
-        content: const Text('Help center content would go here.', style: TextStyle(color: Colors.grey)),
+        title: const Text('Help Center'),
+        content: const Text('Help center content would go here.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -313,22 +295,15 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Send Feedback', style: TextStyle(color: Colors.white)),
+        title: const Text('Send Feedback'),
         content: const TextField(
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: 'Enter your feedback...',
-            hintStyle: TextStyle(color: Colors.grey),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.redAccent)),
-          ),
+          decoration: InputDecoration(hintText: 'Enter your feedback...'),
           maxLines: 3,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -343,15 +318,14 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('About', style: TextStyle(color: Colors.white)),
+        title: const Text('About'),
         content: const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('App Version: 1.0.0', style: TextStyle(color: Colors.grey)),
-            Text('Build: 100', style: TextStyle(color: Colors.grey)),
-            Text('© 2024 Your Company', style: TextStyle(color: Colors.grey)),
+            Text('App Version: 1.0.0'),
+            Text('Build: 100'),
+            Text('© 2024 Your Company'),
           ],
         ),
         actions: [
@@ -368,13 +342,12 @@ class _AccountState extends State<Account> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.darkBgLight,
-        title: const Text('Logout', style: TextStyle(color: Colors.white)),
-        content: const Text('Are you sure you want to logout?', style: TextStyle(color: Colors.grey)),
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
           ),
           TextButton(
             onPressed: () {
