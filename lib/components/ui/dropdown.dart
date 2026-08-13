@@ -28,7 +28,7 @@ class MyDropdown extends StatelessWidget {
                   value: e,
                   child: Text(
                     e,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: TextStyle(color: AppColors.primaryText(context), fontSize: 14),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -37,9 +37,9 @@ class MyDropdown extends StatelessWidget {
               .toList(),
           onChanged: onChanged,
           underline: const SizedBox(),
-          dropdownColor: AppColors.darkBgLightDropdown,
+          dropdownColor: AppColors.dropdownSurface(context),
           // give it shadow
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.primaryText(context)),
           iconEnabledColor: Colors.red,
           icon: const Icon(LucideIcons.chevronDown, color: Colors.red, size: 20),
           itemHeight: 48, // Must be >= 48

@@ -88,8 +88,8 @@ class ConfigurationCardState extends State<ConfigurationCard> {
     );
 
     // Common text style for slider values for consistency.
-    const valueTextStyle = TextStyle(
-      color: Colors.white70,
+    final valueTextStyle = TextStyle(
+      color: AppColors.secondaryText(context),
       fontSize: 11,
       fontWeight: FontWeight.w500,
     );
@@ -97,15 +97,15 @@ class ConfigurationCardState extends State<ConfigurationCard> {
     return Column(
       children: [
         // Title ------------------------------------------
-        const Padding(
-          padding: EdgeInsets.only(top: 24.0, bottom: 16.0),
+        Padding(
+          padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
           child: Center(
             child: Text(
               'Current Configuration',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppColors.primaryText(context),
               ),
             ),
           ),
@@ -113,7 +113,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
         // Configuration Card ------------------------------------------
         Container(
           decoration: BoxDecoration(
-            color: AppColors.darkBgLight,
+            color: AppColors.surface(context),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.red, width: 1.5),
           ),

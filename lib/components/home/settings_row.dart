@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:brb/styles/style.dart';
 
 class MySettingRow extends StatelessWidget {
   final String label;
@@ -36,7 +37,7 @@ class MySettingRow extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.primaryText(context),
                   fontWeight: FontWeight.w500,
                   fontSize: inline ? 10 : 12,
                 ),
