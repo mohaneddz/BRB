@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:brb/models/history_event.dart';
 import 'package:brb/pages/alarm.dart';
+import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/camera_utils.dart';
 import 'package:brb/utils/tools/gps_utils.dart';
 import 'package:brb/utils/tools/history_service.dart';
@@ -18,8 +20,13 @@ import 'package:brb/utils/tools/history_service.dart';
 class AlarmController {
   final HistoryService historyService;
   final GpsService gpsService;
+  final SettingsService settingsService;
 
-  AlarmController({required this.historyService, required this.gpsService});
+  AlarmController({
+    required this.historyService,
+    required this.gpsService,
+    required this.settingsService,
+  });
 
   Future<void> fire({
     required BuildContext context,
@@ -36,7 +43,7 @@ class AlarmController {
       }
     }
     if (soundEnabled) {
-      SystemSound.play(SystemSoundType.alert);
+      await _playAlarmSound();
     }
 
     final photoPath = cameraEnabled ? await _tryCapturePhoto() : null;
@@ -74,6 +81,20 @@ class AlarmController {
         ),
       );
     }
+  }
+
+  Future<void> _playAlarmSound() async {
+    final customPath = settingsService.getAlarmTonePath();
+    if (customPath != null && await File(customPath).exists()) {
+      try {
+        final player = AudioPlayer();
+        await player.play(DeviceFileSource(customPath));
+        return;
+      } catch (_) {
+        // Fall through to the system alert sound below.
+      }
+    }
+    SystemSound.play(SystemSoundType.alert);
   }
 
   Future<String?> _tryCapturePhoto() async {

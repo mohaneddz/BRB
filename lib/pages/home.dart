@@ -55,6 +55,7 @@ class _HomeState extends State<Home> {
     _alarmController = AlarmController(
       historyService: _historyService,
       gpsService: _gpsService,
+      settingsService: _settingsService,
     );
     _detectionService.onTrigger = _onTriggered;
     _init();
