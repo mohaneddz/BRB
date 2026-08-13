@@ -57,4 +57,42 @@ class SettingsService {
   // === Microphone Access ===
   bool isMicrophoneAccessEnabled() => prefs.getBool('microphone_access_enabled') ?? true;
   Future<void> setMicrophoneAccessEnabled(bool value) async => await prefs.setBool('microphone_access_enabled', value);
+
+  // === Active Configuration (Home screen's Current Configuration card) ===
+  String getActiveMode() => prefs.getString('active_mode') ?? 'Pocket';
+  Future<void> setActiveMode(String value) async => await prefs.setString('active_mode', value);
+
+  double getActiveDelay() => prefs.getDouble('active_delay') ?? 1.0;
+  Future<void> setActiveDelay(double value) async => await prefs.setDouble('active_delay', value);
+
+  double getActiveGrace() => prefs.getDouble('active_grace') ?? 0.5;
+  Future<void> setActiveGrace(double value) async => await prefs.setDouble('active_grace', value);
+
+  bool getActiveCameraEnabled() => prefs.getBool('active_camera') ?? false;
+  Future<void> setActiveCameraEnabled(bool value) async => await prefs.setBool('active_camera', value);
+
+  bool getActiveLocationEnabled() => prefs.getBool('active_location') ?? false;
+  Future<void> setActiveLocationEnabled(bool value) async => await prefs.setBool('active_location', value);
+
+  double getActiveSound() => prefs.getDouble('active_sound') ?? 0.5;
+  Future<void> setActiveSound(double value) async => await prefs.setDouble('active_sound', value);
+
+  bool getActiveVibrationConfig() => prefs.getBool('active_vibration') ?? true;
+  Future<void> setActiveVibrationConfig(bool value) async => await prefs.setBool('active_vibration', value);
+
+  // === Account Profile ===
+  String getFullName() => prefs.getString('profile_full_name') ?? 'Mohaned Manaa';
+  Future<void> setFullName(String value) async => await prefs.setString('profile_full_name', value);
+
+  String getUsername() => prefs.getString('profile_username') ?? 'mohaneddz';
+  Future<void> setUsername(String value) async => await prefs.setString('profile_username', value);
+
+  String getEmail() => prefs.getString('profile_email') ?? 'mohaneddz@example.com';
+  Future<void> setEmail(String value) async => await prefs.setString('profile_email', value);
+
+  String getPhoneNumber() => prefs.getString('profile_phone') ?? '+1 (555) 123-4567';
+  Future<void> setPhoneNumber(String value) async => await prefs.setString('profile_phone', value);
+
+  String getBio() => prefs.getString('profile_bio') ?? 'Flutter developer and tech enthusiast';
+  Future<void> setBio(String value) async => await prefs.setString('profile_bio', value);
 }
