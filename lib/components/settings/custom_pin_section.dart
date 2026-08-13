@@ -24,7 +24,6 @@ class CustomPinSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.darkBgLight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -33,9 +32,9 @@ class CustomPinSection extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Custom PIN',
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: AppColors.primaryText(context), fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Switch(value: enabled, onChanged: onToggle, activeColor: AppColors.accent),
               ],
@@ -47,15 +46,15 @@ class CustomPinSection extends StatelessWidget {
                 obscureText: obscurePin,
                 keyboardType: TextInputType.number,
                 maxLength: 6,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.primaryText(context)),
                 decoration: InputDecoration(
                   hintText: 'Enter 4-6 digit PIN',
-                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: AppColors.secondaryText(context)),
                   filled: true,
-                  fillColor: AppColors.darkBg,
+                  fillColor: AppColors.background(context),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                   suffixIcon: IconButton(
-                    icon: Icon(obscurePin ? LucideIcons.eye : LucideIcons.eyeOff, color: Colors.grey),
+                    icon: Icon(obscurePin ? LucideIcons.eye : LucideIcons.eyeOff, color: AppColors.secondaryText(context)),
                     onPressed: onToggleObscure,
                   ),
                 ),

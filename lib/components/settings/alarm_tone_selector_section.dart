@@ -12,27 +12,26 @@ class AlarmToneSelectorSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.darkBgLight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Alarm Tone',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(color: AppColors.primaryText(context), fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: selectedAlarmTone,
-              dropdownColor: AppColors.darkBg,
-              style: const TextStyle(color: Colors.white),
+              dropdownColor: AppColors.background(context),
+              style: TextStyle(color: AppColors.primaryText(context)),
               icon: const SizedBox.shrink(),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: AppColors.darkBg,
+                fillColor: AppColors.background(context),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-                prefixIcon: const Icon(LucideIcons.music, color: Colors.white),
+                prefixIcon: Icon(LucideIcons.music, color: AppColors.primaryText(context)),
               ),
               items: alarmTones.map((tone) {
                 return DropdownMenuItem(

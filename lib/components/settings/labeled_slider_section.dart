@@ -26,7 +26,6 @@ class LabeledSliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.darkBgLight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -34,8 +33,8 @@ class LabeledSliderSection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: AppColors.primaryText(context),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -59,7 +58,10 @@ class LabeledSliderSection extends StatelessWidget {
             ),
             Text(
               valueLabel,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: TextStyle(
+                color: AppColors.secondaryText(context),
+                fontSize: 12,
+              ),
             ),
           ],
         ),

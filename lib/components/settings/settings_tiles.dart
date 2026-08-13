@@ -14,15 +14,12 @@ class SwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = enabled ? AppColors.primaryText(context) : AppColors.secondaryText(context);
     return Card(
-      color: AppColors.darkBgLight,
       child: ListTile(
-        leading: Icon(icon, color: enabled ? AppColors.accent : Colors.grey),
-        title: Text(
-          title,
-          style: TextStyle(color: enabled ? Colors.white : Colors.grey, fontWeight: FontWeight.w500),
-        ),
-        subtitle: subtitle != null ? Text(subtitle!, style: TextStyle(color: enabled ? Colors.grey : Colors.grey.withAlpha(150), fontSize: 12)) : null,
+        leading: Icon(icon, color: enabled ? AppColors.accent : AppColors.secondaryText(context)),
+        title: Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
+        subtitle: subtitle != null ? Text(subtitle!, style: TextStyle(color: AppColors.secondaryText(context), fontSize: 12)) : null,
         trailing: Switch(value: value, onChanged: enabled ? onChanged : null, activeColor: AppColors.accent),
         enabled: enabled,
       ),
@@ -41,16 +38,13 @@ class ActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = enabled ? AppColors.primaryText(context) : AppColors.secondaryText(context);
     return Card(
-      color: AppColors.darkBgLight,
       child: ListTile(
-        leading: Icon(icon, color: enabled ? AppColors.accent : Colors.grey),
-        title: Text(
-          title,
-          style: TextStyle(color: enabled ? Colors.white : Colors.grey, fontWeight: FontWeight.w500),
-        ),
-        subtitle: Text(subtitle, style: TextStyle(color: enabled ? Colors.grey : Colors.grey.withAlpha(150), fontSize: 12)),
-        trailing: const Icon(LucideIcons.chevronRight, color: Colors.grey, size: 16),
+        leading: Icon(icon, color: enabled ? AppColors.accent : AppColors.secondaryText(context)),
+        title: Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
+        subtitle: Text(subtitle, style: TextStyle(color: AppColors.secondaryText(context), fontSize: 12)),
+        trailing: Icon(LucideIcons.chevronRight, color: AppColors.secondaryText(context), size: 16),
         onTap: enabled ? onTap : null,
         enabled: enabled,
       ),
@@ -67,13 +61,9 @@ class InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.darkBgLight,
       child: ListTile(
-        title: Text(
-          title,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-        ),
-        trailing: Text(value, style: const TextStyle(color: Colors.grey)),
+        title: Text(title, style: TextStyle(color: AppColors.primaryText(context), fontWeight: FontWeight.w500)),
+        trailing: Text(value, style: TextStyle(color: AppColors.secondaryText(context))),
       ),
     );
   }

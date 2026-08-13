@@ -19,16 +19,15 @@ class AlarmSoundPickerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.darkBgLight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Custom Alarm Sound',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.primaryText(context),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -36,7 +35,10 @@ class AlarmSoundPickerSection extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               customToneName ?? 'Using the built-in tone selected above',
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: TextStyle(
+                color: AppColors.secondaryText(context),
+                fontSize: 12,
+              ),
             ),
             const SizedBox(height: 12),
             Row(
@@ -56,7 +58,7 @@ class AlarmSoundPickerSection extends StatelessWidget {
                   const SizedBox(width: 8),
                   IconButton(
                     onPressed: onClear,
-                    icon: const Icon(LucideIcons.x, color: Colors.grey),
+                    icon: Icon(LucideIcons.x, color: AppColors.secondaryText(context)),
                     tooltip: 'Use built-in tone instead',
                   ),
                 ],
