@@ -14,7 +14,6 @@ class ProfileHeader extends StatefulWidget {
   final String username;
   final String bio;
   final String joinDate;
-  final VoidCallback? onImagePicker;
 
   const ProfileHeader({
     super.key,
@@ -22,7 +21,6 @@ class ProfileHeader extends StatefulWidget {
     required this.username,
     required this.bio,
     required this.joinDate,
-    this.onImagePicker,
   });
 
   @override

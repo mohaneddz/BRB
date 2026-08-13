@@ -17,10 +17,15 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-  Future<void> _loadFirebaseKey() async {
+  Future<void> _loadProfile() async {
     await _settingsService.init();
     setState(() {
       _firebaseKey = _settingsService.getFirebaseKey() ?? '';
+      _fullName = _settingsService.getFullName();
+      _username = _settingsService.getUsername();
+      _email = _settingsService.getEmail();
+      _phoneNumber = _settingsService.getPhoneNumber();
+      _bio = _settingsService.getBio();
       _isLoading = false;
     });
   }
@@ -28,7 +33,6 @@ class _AccountState extends State<Account> {
   String _firebaseKey = '';
   final SettingsService _settingsService = SettingsService();
   bool _isLoading = true;
-  // Mock user data - replace with actual user data
   String _username = 'mohaneddz';
   String _email = 'mohaneddz@example.com';
   String _fullName = 'Mohaned Manaa';
@@ -36,14 +40,12 @@ class _AccountState extends State<Account> {
   String _phoneNumber = '+1 (555) 123-4567';
   final String _joinDate = 'January 2024';
 
-  // Removed redundant redeclaration of _loadFirebaseKey
-
   @override
   Widget build(BuildContext context) {
     // Only load once
     if (_isLoading) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _loadFirebaseKey();
+        _loadProfile();
       });
       return Scaffold(
         backgroundColor: AppColors.darkBg,
@@ -78,18 +80,58 @@ class _AccountState extends State<Account> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ProfileHeader(fullName: _fullName, username: _username, bio: _bio, joinDate: _joinDate, onImagePicker: _showImagePicker),
+            ProfileHeader(fullName: _fullName, username: _username, bio: _bio, joinDate: _joinDate),
 
             const SizedBox(height: 32),
 
             InfoSection(
               title: 'Personal Information',
               children: [
-                InfoTile(icon: LucideIcons.user, title: 'Full Name', subtitle: _fullName, onTap: () => _showEditDialog('Full Name', _fullName, (value) => setState(() => _fullName = value))),
-                InfoTile(icon: LucideIcons.atSign, title: 'Username', subtitle: '@$_username', onTap: () => _showEditDialog('Username', _username, (value) => setState(() => _username = value))),
-                InfoTile(icon: LucideIcons.mail, title: 'Email', subtitle: _email, onTap: () => _showEditDialog('Email', _email, (value) => setState(() => _email = value))),
-                InfoTile(icon: LucideIcons.phone, title: 'Phone Number', subtitle: _phoneNumber, onTap: () => _showEditDialog('Phone Number', _phoneNumber, (value) => setState(() => _phoneNumber = value))),
-                InfoTile(icon: LucideIcons.fileText, title: 'Bio', subtitle: _bio, onTap: () => _showEditDialog('Bio', _bio, (value) => setState(() => _bio = value))),
+                InfoTile(
+                  icon: LucideIcons.user,
+                  title: 'Full Name',
+                  subtitle: _fullName,
+                  onTap: () => _showEditDialog('Full Name', _fullName, (value) async {
+                    setState(() => _fullName = value);
+                    await _settingsService.setFullName(value);
+                  }),
+                ),
+                InfoTile(
+                  icon: LucideIcons.atSign,
+                  title: 'Username',
+                  subtitle: '@$_username',
+                  onTap: () => _showEditDialog('Username', _username, (value) async {
+                    setState(() => _username = value);
+                    await _settingsService.setUsername(value);
+                  }),
+                ),
+                InfoTile(
+                  icon: LucideIcons.mail,
+                  title: 'Email',
+                  subtitle: _email,
+                  onTap: () => _showEditDialog('Email', _email, (value) async {
+                    setState(() => _email = value);
+                    await _settingsService.setEmail(value);
+                  }),
+                ),
+                InfoTile(
+                  icon: LucideIcons.phone,
+                  title: 'Phone Number',
+                  subtitle: _phoneNumber,
+                  onTap: () => _showEditDialog('Phone Number', _phoneNumber, (value) async {
+                    setState(() => _phoneNumber = value);
+                    await _settingsService.setPhoneNumber(value);
+                  }),
+                ),
+                InfoTile(
+                  icon: LucideIcons.fileText,
+                  title: 'Bio',
+                  subtitle: _bio,
+                  onTap: () => _showEditDialog('Bio', _bio, (value) async {
+                    setState(() => _bio = value);
+                    await _settingsService.setBio(value);
+                  }),
+                ),
                 InfoTile(
                   icon: LucideIcons.key,
                   title: 'Firebase Key',
@@ -230,50 +272,6 @@ class _AccountState extends State<Account> {
             },
             child: const Text('Save', style: TextStyle(color: Colors.redAccent)),
           ),
-        ],
-      ),
-    );
-  }
-
-  void _showImagePicker() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.darkBgLight,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Change Profile Picture',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [_buildImagePickerOption(LucideIcons.camera, 'Camera', () {}), _buildImagePickerOption(LucideIcons.image, 'Gallery', () {}), _buildImagePickerOption(LucideIcons.trash2, 'Remove', () {})],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildImagePickerOption(IconData icon, String label, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(color: Colors.redAccent.withAlpha(1), shape: BoxShape.circle),
-            child: Icon(icon, color: Colors.redAccent, size: 24),
-          ),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: Colors.white, fontSize: 14)),
         ],
       ),
     );
