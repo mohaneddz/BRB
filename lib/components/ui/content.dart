@@ -4,6 +4,7 @@ import 'package:brb/pages/home.dart';
 import 'package:brb/pages/history.dart';
 import 'package:brb/pages/account.dart';
 import 'package:brb/pages/settings.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class Content extends StatelessWidget {
   final int index;
@@ -11,9 +12,10 @@ class Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeTitle = AppLocalizations.of(context)!.navHome;
     switch (index) {
       case 0:
-        return const Home(title: 'Home');
+        return Home(title: homeTitle);
       case 1:
         return const History();
       case 2:
@@ -21,7 +23,7 @@ class Content extends StatelessWidget {
       case 3:
         return const Settings();
       default:
-        return const Home(title: 'Home');
+        return Home(title: homeTitle);
     }
   }
 }

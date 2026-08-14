@@ -8,6 +8,7 @@ import 'package:brb/components/account/info_tile.dart';
 import 'package:brb/components/account/action_tile.dart';
 
 import 'package:brb/utils/settings_utis.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -49,7 +50,7 @@ class _AccountState extends State<Account> {
       });
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Account'),
+          title: Text(AppLocalizations.of(context)!.navAccount),
           leading: IconButton(
             icon: const Icon(LucideIcons.arrowLeft),
             onPressed: () => Navigator.of(context).pop(),
@@ -61,7 +62,7 @@ class _AccountState extends State<Account> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account'),
+        title: Text(AppLocalizations.of(context)!.navAccount),
         leading: IconButton(
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => Navigator.of(context).pop(),

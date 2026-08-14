@@ -4,6 +4,7 @@ import 'package:brb/styles/style.dart';
 import 'package:brb/components/history/event_card.dart';
 import 'package:brb/models/history_event.dart';
 import 'package:brb/utils/tools/history_service.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -35,7 +36,7 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('History')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.navHistory)),
       body: _loading
           ? const Center(
               child: CircularProgressIndicator(color: AppColors.accent),

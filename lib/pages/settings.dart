@@ -9,6 +9,7 @@ import 'package:brb/styles/style.dart';
 import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/challenge_service.dart';
 import 'package:brb/utils/theme_controller.dart';
+import 'package:brb/utils/locale_controller.dart';
 import 'package:brb/utils/movement_utils.dart';
 
 import 'package:lucide_icons/lucide_icons.dart';
@@ -22,6 +23,7 @@ import 'package:brb/components/settings/alarm_sound_picker_section.dart';
 import 'package:brb/components/settings/language_selector_section.dart';
 import 'package:brb/components/settings/custom_pin_section.dart';
 import 'package:brb/components/settings/settings_tiles.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -118,12 +120,13 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Settings',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            l10n.navSettings,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           elevation: 0,
         ),
@@ -134,7 +137,7 @@ class _SettingsState extends State<Settings> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.navSettings, style: const TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -174,6 +177,7 @@ class _SettingsState extends State<Settings> {
                     _selectedLanguage = value;
                   });
                   await _settingsService.setLanguage(value);
+                  localeNotifier.value = localeFromLanguageName(value);
                 }
               },
             ),

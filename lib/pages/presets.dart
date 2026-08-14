@@ -8,6 +8,7 @@ import 'package:brb/models/preset.dart';
 import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/presets_service.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class Presets extends StatefulWidget {
   const Presets({super.key});
@@ -178,7 +179,7 @@ class _PresetsState extends State<Presets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Presets'),
+        title: Text(AppLocalizations.of(context)!.presetsTitle),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(LucideIcons.chevronLeft),
