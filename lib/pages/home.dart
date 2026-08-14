@@ -112,10 +112,13 @@ class _HomeState extends State<Home> {
     if (!await _permissionsService.hasSensors()) {
       await _permissionsService.requestSensors();
     }
-    if (_config.camera && !await _permissionsService.hasCamera()) {
+    final cameraWanted = _config.camera && _settingsService.isCameraAccessEnabled();
+    final locationWanted =
+        _config.location && _settingsService.isLocationServiceEnabled();
+    if (cameraWanted && !await _permissionsService.hasCamera()) {
       if (!await _permissionsService.requestCamera()) return false;
     }
-    if (_config.location && !await _permissionsService.hasLocation()) {
+    if (locationWanted && !await _permissionsService.hasLocation()) {
       if (!await _permissionsService.requestLocation()) return false;
     }
     return true;
@@ -163,8 +166,9 @@ class _HomeState extends State<Home> {
       mode: _config.mode,
       vibrationEnabled: _config.vibration,
       soundEnabled: _settingsService.isSoundEnabled(),
-      cameraEnabled: _config.camera,
-      locationEnabled: _config.location,
+      cameraEnabled: _config.camera && _settingsService.isCameraAccessEnabled(),
+      locationEnabled:
+          _config.location && _settingsService.isLocationServiceEnabled(),
     );
   }
 
