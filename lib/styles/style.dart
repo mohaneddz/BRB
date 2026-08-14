@@ -165,7 +165,7 @@ final ThemeData primaryTheme = ThemeData(
   ),
 
   cardTheme: CardThemeData(
-    color: AppColors.darkBg,
+    color: AppColors.darkBgLight,
     elevation: 4,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     margin: const EdgeInsets.all(8),
