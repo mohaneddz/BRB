@@ -5,9 +5,11 @@ import 'package:brb/utils/theme_controller.dart';
 // Components:
 import 'package:brb/components/ui/content.dart';
 import 'package:brb/components/ui/navigation.dart';
+import 'package:brb/utils/tools/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   final settingsService = SettingsService();
   await settingsService.init();
   themeModeNotifier.value = settingsService.getDarkMode()

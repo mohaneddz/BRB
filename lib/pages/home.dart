@@ -11,6 +11,7 @@ import 'package:brb/utils/tools/alarm_controller.dart';
 import 'package:brb/utils/tools/detection_service.dart';
 import 'package:brb/utils/tools/gps_utils.dart';
 import 'package:brb/utils/tools/history_service.dart';
+import 'package:brb/utils/tools/notification_service.dart';
 import 'package:brb/utils/tools/proximity_utils.dart';
 import 'package:brb/utils/tools/sensors_utils.dart';
 import 'package:brb/utils/tools/steps_utils.dart';
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
   final SettingsService _settingsService = SettingsService();
   final PermissionsService _permissionsService = PermissionsService();
   final HistoryService _historyService = HistoryService();
+  final NotificationService _notificationService = NotificationService();
 
   final SensorsService _sensorsService = SensorsService();
   final ProximityService _proximityService = ProximityService();
@@ -137,6 +139,7 @@ class _HomeState extends State<Home> {
   Future<void> _toggleArmed() async {
     if (_armed) {
       _detectionService.disarm();
+      await _notificationService.cancelArmed();
       setState(() => _armed = false);
       return;
     }
@@ -166,11 +169,22 @@ class _HomeState extends State<Home> {
     );
     if (!mounted) return;
     setState(() => _armed = true);
+
+    if (_settingsService.getFloatingNotifications()) {
+      if (!await _permissionsService.hasNotifications()) {
+        await _permissionsService.requestNotifications();
+      }
+      if (await _permissionsService.hasNotifications()) {
+        await _notificationService.showArmed(_config.mode);
+      }
+    }
   }
 
   Future<void> _onTriggered() async {
     if (!mounted) return;
     setState(() => _armed = false);
+    await _notificationService.cancelArmed();
+    if (!mounted) return;
     await _alarmController.fire(
       context: context,
       mode: _config.mode,

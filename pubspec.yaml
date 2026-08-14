@@ -55,6 +55,7 @@ dependencies:
   audioplayers: ^6.1.0
   geocoding: ^3.0.0
   record: ^6.2.1
+  flutter_local_notifications: ^22.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
