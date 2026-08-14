@@ -98,6 +98,9 @@ class SettingsService {
   bool getActiveVibrationConfig() => prefs.getBool('active_vibration') ?? true;
   Future<void> setActiveVibrationConfig(bool value) async => await prefs.setBool('active_vibration', value);
 
+  String getActiveChallengeType() => prefs.getString('active_challenge_type') ?? 'none';
+  Future<void> setActiveChallengeType(String value) async => await prefs.setString('active_challenge_type', value);
+
   // === Account Profile ===
   String getFullName() => prefs.getString('profile_full_name') ?? 'Mohaned Manaa';
   Future<void> setFullName(String value) async => await prefs.setString('profile_full_name', value);

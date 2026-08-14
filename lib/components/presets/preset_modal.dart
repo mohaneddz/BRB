@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:brb/styles/style.dart';
-import 'package:brb/components/home/settings_row.dart'; 
+import 'package:brb/components/home/settings_row.dart';
+import 'package:brb/models/challenge_type.dart';
+import 'package:brb/utils/tools/challenge_service.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 Future<void> showPresetModal({
   required BuildContext context,
   String? initialTitle,
   bool initialVibration = true,
-  bool initialLock = true,
-  bool initialCamera = false, 
-  bool initialLocation = false, 
+  String initialChallengeType = 'none',
+  bool initialCamera = false,
+  bool initialLocation = false,
   double initialVolume = 0.5,
   double initialSound = 0.5,
   String initialDistance = '1m',
@@ -18,9 +21,9 @@ Future<void> showPresetModal({
   required void Function({
     required String title,
     required bool vibration,
-    required bool lock,
-    required bool camera, 
-    required bool location, 
+    required String challengeType,
+    required bool camera,
+    required bool location,
     required double volume,
     required double sound,
     required String distance,
@@ -31,14 +34,22 @@ Future<void> showPresetModal({
 }) async {
   final titleController = TextEditingController(text: initialTitle ?? '');
   bool vibration = initialVibration;
-  bool lock = initialLock;
-  bool camera = initialCamera; 
-  bool location = initialLocation; 
+  ChallengeType challengeType = ChallengeType.fromName(initialChallengeType);
+  bool camera = initialCamera;
+  bool location = initialLocation;
   double volume = initialVolume;
   double sound = initialSound;
   String distance = initialDistance;
   String delay = initialDelay;
   String mode = initialMode;
+
+  final prefs = await SharedPreferences.getInstance();
+  final challengeService = ChallengeService();
+  final pinConfigured = challengeService.isPinEnabled(prefs) &&
+      (challengeService.getPin(prefs)?.isNotEmpty ?? false);
+  final digitCodeConfigured = challengeService.isDigitCodeEnabled(prefs) &&
+      (challengeService.getDigitCode(prefs)?.isNotEmpty ?? false);
+  if (!context.mounted) return;
 
   final modes = ['Pocket', 'Sensitive', 'Distant', 'Steps'];
 
@@ -253,9 +264,9 @@ Future<void> showPresetModal({
                                 icon: LucideIcons.camera,
                                 inline: true,
                                 child: Checkbox(
-                                  value: lock,
+                                  value: camera,
                                   onChanged: (val) =>
-                                      setState(() => lock = val!),
+                                      setState(() => camera = val!),
                                   activeColor: Colors.red,
                                   checkColor: Colors.white,
                                   side: const BorderSide(
@@ -354,9 +365,9 @@ Future<void> showPresetModal({
                                 icon: LucideIcons.mapPin,
                                 inline: true,
                                 child: Checkbox(
-                                  value: camera,
+                                  value: location,
                                   onChanged: (val) =>
-                                      setState(() => camera = val!),
+                                      setState(() => location = val!),
                                   activeColor: Colors.red,
                                   checkColor: Colors.white,
                                   side: const BorderSide(
@@ -374,6 +385,70 @@ Future<void> showPresetModal({
                       ],
                     ),
                     const SizedBox(height: 24),
+
+                    // Challenge dropdown (spanning full width)
+                    MySettingRow(
+                      label: 'Challenge',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.background(context),
+                          border: Border.all(color: Colors.red, width: 1.5),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<ChallengeType>(
+                                  value: challengeType,
+                                  items: ChallengeType.values
+                                      .map(
+                                        (c) => DropdownMenuItem(
+                                          value: c,
+                                          child: Text(
+                                            c.label,
+                                            style: TextStyle(
+                                              color: AppColors.primaryText(context),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (val) =>
+                                      setState(() => challengeType = val!),
+                                  dropdownColor: AppColors.dropdownSurface(context),
+                                  icon: const SizedBox.shrink(),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              LucideIcons.shield,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (challengeType == ChallengeType.pin && !pinConfigured)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'No PIN set yet - set one in Settings > Security.',
+                          style: TextStyle(color: AppColors.secondaryText(context), fontSize: 11),
+                        ),
+                      ),
+                    if (challengeType == ChallengeType.digitCode && !digitCodeConfigured)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'No Digit Code set yet - set one in Settings > Security.',
+                          style: TextStyle(color: AppColors.secondaryText(context), fontSize: 11),
+                        ),
+                      ),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -389,9 +464,9 @@ Future<void> showPresetModal({
                           onSave(
                             title: titleController.text.trim(),
                             vibration: vibration,
-                            lock: lock,
-                            camera: camera, 
-                            location: location, 
+                            challengeType: challengeType.name,
+                            camera: camera,
+                            location: location,
                             volume: volume,
                             sound: sound,
                             distance: distance,

@@ -2,46 +2,75 @@ import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:brb/styles/style.dart';
-import 'package:brb/utils/tools/pin_service.dart';
+import 'package:brb/models/challenge_type.dart';
+import 'package:brb/utils/tools/challenge_service.dart';
 
 /// Full-screen alarm shown when [DetectionService] fires. Blocks the back
-/// gesture so a thief can't just navigate away, and requires the PIN (if
-/// one is set in Settings) to dismiss.
+/// gesture so a thief can't just navigate away, and requires the triggering
+/// preset's challenge (PIN, Digit Code, or none - set in Settings > Security,
+/// picked per-preset) to dismiss.
 class AlarmScreen extends StatefulWidget {
-  const AlarmScreen({super.key});
+  final String challengeType;
+
+  const AlarmScreen({super.key, required this.challengeType});
 
   @override
   State<AlarmScreen> createState() => _AlarmScreenState();
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
-  final PinService _pinService = PinService();
-  final TextEditingController _pinController = TextEditingController();
-  bool _pinRequired = false;
+  final ChallengeService _challengeService = ChallengeService();
+  final TextEditingController _codeController = TextEditingController();
+  late final ChallengeType _challenge;
+  bool _challengeRequired = false;
   bool _loading = true;
   String? _error;
 
   @override
   void initState() {
     super.initState();
+    _challenge = ChallengeType.fromName(widget.challengeType);
     _load();
   }
 
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
-    final pin = _pinService.getPin(prefs);
+    bool required;
+    switch (_challenge) {
+      case ChallengeType.pin:
+        required = _challengeService.isPinEnabled(prefs) &&
+            (_challengeService.getPin(prefs)?.isNotEmpty ?? false);
+        break;
+      case ChallengeType.digitCode:
+        required = _challengeService.isDigitCodeEnabled(prefs) &&
+            (_challengeService.getDigitCode(prefs)?.isNotEmpty ?? false);
+        break;
+      case ChallengeType.none:
+        required = false;
+        break;
+    }
     if (!mounted) return;
     setState(() {
-      _pinRequired = _pinService.isEnabled(prefs) && (pin?.isNotEmpty ?? false);
+      _challengeRequired = required;
       _loading = false;
     });
   }
 
+  String get _hintText =>
+      _challenge == ChallengeType.digitCode ? 'Digit Code' : 'PIN';
+
+  String get _wrongMessage =>
+      _challenge == ChallengeType.digitCode ? 'Wrong Digit Code' : 'Wrong PIN';
+
   Future<void> _dismiss() async {
-    if (_pinRequired) {
+    if (_challengeRequired) {
       final prefs = await SharedPreferences.getInstance();
-      if (!_pinService.verify(prefs, _pinController.text.trim())) {
-        setState(() => _error = 'Wrong PIN');
+      final candidate = _codeController.text.trim();
+      final correct = _challenge == ChallengeType.digitCode
+          ? _challengeService.verifyDigitCode(prefs, candidate)
+          : _challengeService.verifyPin(prefs, candidate);
+      if (!correct) {
+        setState(() => _error = _wrongMessage);
         return;
       }
     }
@@ -51,7 +80,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
 
   @override
   void dispose() {
-    _pinController.dispose();
+    _codeController.dispose();
     super.dispose();
   }
 
@@ -91,9 +120,9 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 32),
-                        if (_pinRequired) ...[
+                        if (_challengeRequired) ...[
                           TextField(
-                            controller: _pinController,
+                            controller: _codeController,
                             obscureText: true,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
@@ -103,7 +132,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               letterSpacing: 8,
                             ),
                             decoration: InputDecoration(
-                              hintText: 'PIN',
+                              hintText: _hintText,
                               hintStyle: const TextStyle(color: Colors.white54),
                               filled: true,
                               fillColor: Colors.black26,

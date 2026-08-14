@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/utils/settings_utis.dart';
-import 'package:brb/utils/tools/pin_service.dart';
+import 'package:brb/utils/tools/challenge_service.dart';
 import 'package:brb/utils/theme_controller.dart';
 import 'package:brb/utils/movement_utils.dart';
 
@@ -32,12 +32,15 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final SettingsService _settingsService = SettingsService();
-  final PinService _pinService = PinService();
+  final ChallengeService _challengeService = ChallengeService();
   final TextEditingController _pinController = TextEditingController();
+  final TextEditingController _digitCodeController = TextEditingController();
   late final SharedPreferences _prefs;
   bool _isLoading = true;
   bool _pinEnabled = false;
   bool _pinObscured = true;
+  bool _digitCodeEnabled = false;
+  bool _digitCodeObscured = true;
 
   // General
   bool _darkModeEnabled = true;
@@ -78,8 +81,10 @@ class _SettingsState extends State<Settings> {
   Future<void> _initializeSettings() async {
     await _settingsService.init();
     _prefs = await SharedPreferences.getInstance();
-    _pinEnabled = _pinService.isEnabled(_prefs);
-    _pinController.text = _pinService.getPin(_prefs) ?? '';
+    _pinEnabled = _challengeService.isPinEnabled(_prefs);
+    _pinController.text = _challengeService.getPin(_prefs) ?? '';
+    _digitCodeEnabled = _challengeService.isDigitCodeEnabled(_prefs);
+    _digitCodeController.text = _challengeService.getDigitCode(_prefs) ?? '';
     String lang = _settingsService.getLanguage();
     if (lang == 'en') lang = 'English';
     if (lang == 'fr') lang = 'French';
@@ -107,6 +112,7 @@ class _SettingsState extends State<Settings> {
   @override
   void dispose() {
     _pinController.dispose();
+    _digitCodeController.dispose();
     super.dispose();
   }
 
@@ -244,17 +250,36 @@ class _SettingsState extends State<Settings> {
             // Security
             _buildSectionHeader('Security'),
             CustomPinSection(
+              title: 'Custom PIN',
+              hintText: 'Enter 4-6 digit PIN',
               enabled: _pinEnabled,
               pinController: _pinController,
               obscurePin: _pinObscured,
               onToggle: (value) async {
                 setState(() => _pinEnabled = value);
-                await _pinService.setEnabled(_prefs, value);
+                await _challengeService.setPinEnabled(_prefs, value);
               },
               onToggleObscure: () =>
                   setState(() => _pinObscured = !_pinObscured),
               onPinChanged: (value) async {
-                await _pinService.setPin(_prefs, value);
+                await _challengeService.setPin(_prefs, value);
+              },
+            ),
+            const SizedBox(height: 12),
+            CustomPinSection(
+              title: 'Digit Code',
+              hintText: 'Enter 4-6 digit code',
+              enabled: _digitCodeEnabled,
+              pinController: _digitCodeController,
+              obscurePin: _digitCodeObscured,
+              onToggle: (value) async {
+                setState(() => _digitCodeEnabled = value);
+                await _challengeService.setDigitCodeEnabled(_prefs, value);
+              },
+              onToggleObscure: () =>
+                  setState(() => _digitCodeObscured = !_digitCodeObscured),
+              onPinChanged: (value) async {
+                await _challengeService.setDigitCode(_prefs, value);
               },
             ),
             const SizedBox(height: 24),

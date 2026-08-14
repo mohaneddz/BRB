@@ -1,7 +1,7 @@
 class Preset {
   final String title;
   final bool vibration;
-  final bool lock;
+  final String challengeType;
   final bool camera;
   final bool location;
   final double volume;
@@ -14,7 +14,7 @@ class Preset {
   const Preset({
     required this.title,
     required this.vibration,
-    required this.lock,
+    required this.challengeType,
     required this.camera,
     required this.location,
     required this.volume,
@@ -28,7 +28,7 @@ class Preset {
   Preset copyWith({
     String? title,
     bool? vibration,
-    bool? lock,
+    String? challengeType,
     bool? camera,
     bool? location,
     double? volume,
@@ -41,7 +41,7 @@ class Preset {
     return Preset(
       title: title ?? this.title,
       vibration: vibration ?? this.vibration,
-      lock: lock ?? this.lock,
+      challengeType: challengeType ?? this.challengeType,
       camera: camera ?? this.camera,
       location: location ?? this.location,
       volume: volume ?? this.volume,
@@ -56,7 +56,7 @@ class Preset {
   Map<String, dynamic> toJson() => {
     'title': title,
     'vibration': vibration,
-    'lock': lock,
+    'challengeType': challengeType,
     'camera': camera,
     'location': location,
     'volume': volume,
@@ -70,7 +70,7 @@ class Preset {
   factory Preset.fromJson(Map<String, dynamic> json) => Preset(
     title: json['title'] as String,
     vibration: json['vibration'] as bool,
-    lock: json['lock'] as bool,
+    challengeType: json['challengeType'] as String? ?? 'none',
     camera: json['camera'] as bool,
     location: json['location'] as bool,
     volume: (json['volume'] as num).toDouble(),

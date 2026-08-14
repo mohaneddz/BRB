@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
         location: _settingsService.getActiveLocationEnabled(),
         sound: _settingsService.getActiveSound(),
         vibration: _settingsService.getActiveVibrationConfig(),
+        challengeType: _settingsService.getActiveChallengeType(),
       );
       _loading = false;
     });
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
     await _settingsService.setActiveLocationEnabled(values.location);
     await _settingsService.setActiveSound(values.sound);
     await _settingsService.setActiveVibrationConfig(values.vibration);
+    await _settingsService.setActiveChallengeType(values.challengeType);
   }
 
   Future<void> _openPresets() async {
@@ -103,6 +105,7 @@ class _HomeState extends State<Home> {
       location: _settingsService.getActiveLocationEnabled(),
       sound: _settingsService.getActiveSound(),
       vibration: _settingsService.getActiveVibrationConfig(),
+      challengeType: _settingsService.getActiveChallengeType(),
     );
     _config = reloaded;
     _configKey.currentState?.applyValues(reloaded);
@@ -169,6 +172,7 @@ class _HomeState extends State<Home> {
       cameraEnabled: _config.camera && _settingsService.isCameraAccessEnabled(),
       locationEnabled:
           _config.location && _settingsService.isLocationServiceEnabled(),
+      challengeType: _config.challengeType,
     );
   }
 

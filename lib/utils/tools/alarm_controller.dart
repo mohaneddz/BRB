@@ -36,6 +36,7 @@ class AlarmController {
     required bool soundEnabled,
     required bool cameraEnabled,
     required bool locationEnabled,
+    required String challengeType,
   }) async {
     if (vibrationEnabled) {
       final hasVibrator = await Vibration.hasVibrator();
@@ -80,7 +81,7 @@ class AlarmController {
     if (context.mounted) {
       await Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(
-          builder: (_) => const AlarmScreen(),
+          builder: (_) => AlarmScreen(challengeType: challengeType),
           fullscreenDialog: true,
         ),
       );

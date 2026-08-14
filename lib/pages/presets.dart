@@ -50,7 +50,7 @@ class _PresetsState extends State<Presets> {
           ({
             required String title,
             required bool vibration,
-            required bool lock,
+            required String challengeType,
             required bool camera,
             required bool location,
             required double volume,
@@ -64,7 +64,7 @@ class _PresetsState extends State<Presets> {
                 Preset(
                   title: title,
                   vibration: vibration,
-                  lock: lock,
+                  challengeType: challengeType,
                   camera: camera,
                   location: location,
                   volume: volume,
@@ -87,7 +87,7 @@ class _PresetsState extends State<Presets> {
       context: context,
       initialTitle: preset.title,
       initialVibration: preset.vibration,
-      initialLock: preset.lock,
+      initialChallengeType: preset.challengeType,
       initialCamera: preset.camera,
       initialLocation: preset.location,
       initialVolume: preset.volume,
@@ -99,7 +99,7 @@ class _PresetsState extends State<Presets> {
           ({
             required String title,
             required bool vibration,
-            required bool lock,
+            required String challengeType,
             required bool camera,
             required bool location,
             required double volume,
@@ -112,7 +112,7 @@ class _PresetsState extends State<Presets> {
               presets[index] = preset.copyWith(
                 title: title,
                 vibration: vibration,
-                lock: lock,
+                challengeType: challengeType,
                 camera: camera,
                 location: location,
                 volume: volume,
@@ -154,6 +154,7 @@ class _PresetsState extends State<Presets> {
     await _settingsService.setActiveLocationEnabled(preset.location);
     await _settingsService.setActiveSound(preset.sound);
     await _settingsService.setActiveVibrationConfig(preset.vibration);
+    await _settingsService.setActiveChallengeType(preset.challengeType);
 
     setState(() {
       presets[index] = preset.copyWith(lastUsed: 'Just now');

@@ -32,6 +32,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
   late double grace;
   late double sound;
   late String mode;
+  late String challengeType;
 
   final List<String> modes = ['Pocket', 'Sensitive', 'Distant', 'Steps'];
 
@@ -49,6 +50,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
     location = values.location;
     sound = values.sound;
     vibration = values.vibration;
+    challengeType = values.challengeType;
   }
 
   /// Called by the Home screen after a Preset was applied elsewhere, so the
@@ -67,6 +69,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
         location: location,
         sound: sound,
         vibration: vibration,
+        challengeType: challengeType,
       ),
     );
   }

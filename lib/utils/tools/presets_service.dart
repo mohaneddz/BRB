@@ -23,7 +23,7 @@ class PresetsService {
     Preset(
       title: 'GYM',
       vibration: true,
-      lock: false,
+      challengeType: 'none',
       camera: false,
       location: false,
       volume: 0.5,
@@ -36,7 +36,7 @@ class PresetsService {
     Preset(
       title: 'WORK',
       vibration: false,
-      lock: true,
+      challengeType: 'none',
       camera: false,
       location: false,
       volume: 0.8,

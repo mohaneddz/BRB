@@ -6,6 +6,7 @@ class ConfigValues {
   final bool location;
   final double sound;
   final bool vibration;
+  final String challengeType;
 
   const ConfigValues({
     required this.mode,
@@ -15,6 +16,7 @@ class ConfigValues {
     required this.location,
     required this.sound,
     required this.vibration,
+    required this.challengeType,
   });
 
   static const defaults = ConfigValues(
@@ -25,6 +27,7 @@ class ConfigValues {
     location: false,
     sound: 0.5,
     vibration: true,
+    challengeType: 'none',
   );
 
   ConfigValues copyWith({
@@ -35,6 +38,7 @@ class ConfigValues {
     bool? location,
     double? sound,
     bool? vibration,
+    String? challengeType,
   }) {
     return ConfigValues(
       mode: mode ?? this.mode,
@@ -44,6 +48,7 @@ class ConfigValues {
       location: location ?? this.location,
       sound: sound ?? this.sound,
       vibration: vibration ?? this.vibration,
+      challengeType: challengeType ?? this.challengeType,
     );
   }
 }

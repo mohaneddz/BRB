@@ -4,6 +4,8 @@ import 'package:brb/styles/style.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomPinSection extends StatelessWidget {
+  final String title;
+  final String hintText;
   final bool enabled;
   final TextEditingController pinController;
   final bool obscurePin;
@@ -13,6 +15,8 @@ class CustomPinSection extends StatelessWidget {
 
   const CustomPinSection({
     super.key,
+    this.title = 'Custom PIN',
+    this.hintText = 'Enter 4-6 digit PIN',
     required this.enabled,
     required this.pinController,
     required this.obscurePin,
@@ -33,7 +37,7 @@ class CustomPinSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Custom PIN',
+                  title,
                   style: TextStyle(color: AppColors.primaryText(context), fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Switch(value: enabled, onChanged: onToggle, activeColor: AppColors.accent),
@@ -48,7 +52,7 @@ class CustomPinSection extends StatelessWidget {
                 maxLength: 6,
                 style: TextStyle(color: AppColors.primaryText(context)),
                 decoration: InputDecoration(
-                  hintText: 'Enter 4-6 digit PIN',
+                  hintText: hintText,
                   hintStyle: TextStyle(color: AppColors.secondaryText(context)),
                   filled: true,
                   fillColor: AppColors.background(context),
