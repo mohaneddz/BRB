@@ -85,7 +85,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.darkBgLight,
           content: AspectRatio(
             aspectRatio: 1, // Square preview
             child:
@@ -136,7 +135,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   void _onImagePicker() async {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.darkBgLight,
+      backgroundColor: AppColors.surface(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -170,7 +169,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.darkBgLight,
+        color: AppColors.surface(context),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(24),
           bottomRight: Radius.circular(24),
@@ -208,7 +207,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       color: AppColors.primary,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.darkBgLight,
+                        color: AppColors.surface(context),
                         width: 2,
                       ),
                     ),
@@ -225,8 +224,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           const SizedBox(height: 20),
           Text(
             widget.fullName,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppColors.primaryText(context),
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
@@ -243,7 +242,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           const SizedBox(height: 12),
           Text(
             widget.bio,
-            style: const TextStyle(color: Colors.white70, fontSize: 16),
+            style: TextStyle(color: AppColors.secondaryText(context), fontSize: 16),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -275,8 +274,8 @@ class _StatItem extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.grey,
+          style: TextStyle(
+            color: AppColors.secondaryText(context),
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -284,8 +283,8 @@ class _StatItem extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: AppColors.primaryText(context),
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

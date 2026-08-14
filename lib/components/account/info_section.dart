@@ -15,12 +15,12 @@ class InfoSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+            style: TextStyle(color: AppColors.primaryText(context), fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(color: AppColors.darkBgLight, borderRadius: BorderRadius.circular(16)),
+          decoration: BoxDecoration(color: AppColors.surface(context), borderRadius: BorderRadius.circular(16)),
           child: Column(children: children),
         ),
       ],

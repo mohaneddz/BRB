@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:brb/styles/style.dart';
 
 /// Account-page action row: icon chip + title/subtitle + chevron.
 ///
@@ -24,10 +25,10 @@ class ProfileActionTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+        style: TextStyle(color: AppColors.primaryText(context), fontSize: 16, fontWeight: FontWeight.w500),
       ),
-      subtitle: Text(subtitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
-      trailing: const Icon(LucideIcons.chevronRight, color: Colors.grey, size: 18),
+      subtitle: Text(subtitle, style: TextStyle(color: AppColors.secondaryText(context), fontSize: 14)),
+      trailing: Icon(LucideIcons.chevronRight, color: AppColors.secondaryText(context), size: 18),
       onTap: onTap,
     );
   }
