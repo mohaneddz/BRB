@@ -92,6 +92,9 @@ class SettingsService {
   bool getActiveLocationEnabled() => prefs.getBool('active_location') ?? false;
   Future<void> setActiveLocationEnabled(bool value) async => await prefs.setBool('active_location', value);
 
+  bool getActiveMicEnabled() => prefs.getBool('active_mic') ?? false;
+  Future<void> setActiveMicEnabled(bool value) async => await prefs.setBool('active_mic', value);
+
   double getActiveSound() => prefs.getDouble('active_sound') ?? 0.5;
   Future<void> setActiveSound(double value) async => await prefs.setDouble('active_sound', value);
 

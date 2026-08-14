@@ -4,6 +4,7 @@ class ConfigValues {
   final double grace;
   final bool camera;
   final bool location;
+  final bool mic;
   final double sound;
   final bool vibration;
   final String challengeType;
@@ -14,6 +15,7 @@ class ConfigValues {
     required this.grace,
     required this.camera,
     required this.location,
+    this.mic = false,
     required this.sound,
     required this.vibration,
     required this.challengeType,
@@ -25,6 +27,7 @@ class ConfigValues {
     grace: 0.5,
     camera: false,
     location: false,
+    mic: false,
     sound: 0.5,
     vibration: true,
     challengeType: 'none',
@@ -36,6 +39,7 @@ class ConfigValues {
     double? grace,
     bool? camera,
     bool? location,
+    bool? mic,
     double? sound,
     bool? vibration,
     String? challengeType,
@@ -46,6 +50,7 @@ class ConfigValues {
       grace: grace ?? this.grace,
       camera: camera ?? this.camera,
       location: location ?? this.location,
+      mic: mic ?? this.mic,
       sound: sound ?? this.sound,
       vibration: vibration ?? this.vibration,
       challengeType: challengeType ?? this.challengeType,

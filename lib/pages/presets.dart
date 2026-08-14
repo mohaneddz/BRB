@@ -53,6 +53,7 @@ class _PresetsState extends State<Presets> {
             required String challengeType,
             required bool camera,
             required bool location,
+            required bool mic,
             required double volume,
             required double sound,
             required String distance,
@@ -67,6 +68,7 @@ class _PresetsState extends State<Presets> {
                   challengeType: challengeType,
                   camera: camera,
                   location: location,
+                  mic: mic,
                   volume: volume,
                   sound: sound,
                   distance: distance,
@@ -90,6 +92,7 @@ class _PresetsState extends State<Presets> {
       initialChallengeType: preset.challengeType,
       initialCamera: preset.camera,
       initialLocation: preset.location,
+      initialMic: preset.mic,
       initialVolume: preset.volume,
       initialSound: preset.sound,
       initialDistance: preset.distance,
@@ -102,6 +105,7 @@ class _PresetsState extends State<Presets> {
             required String challengeType,
             required bool camera,
             required bool location,
+            required bool mic,
             required double volume,
             required double sound,
             required String distance,
@@ -115,6 +119,7 @@ class _PresetsState extends State<Presets> {
                 challengeType: challengeType,
                 camera: camera,
                 location: location,
+                mic: mic,
                 volume: volume,
                 sound: sound,
                 distance: distance,
@@ -152,6 +157,7 @@ class _PresetsState extends State<Presets> {
     await _settingsService.setActiveGrace(grace);
     await _settingsService.setActiveCameraEnabled(preset.camera);
     await _settingsService.setActiveLocationEnabled(preset.location);
+    await _settingsService.setActiveMicEnabled(preset.mic);
     await _settingsService.setActiveSound(preset.sound);
     await _settingsService.setActiveVibrationConfig(preset.vibration);
     await _settingsService.setActiveChallengeType(preset.challengeType);

@@ -28,6 +28,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
   late bool vibration;
   late bool camera;
   late bool location;
+  late bool mic;
   late double delay;
   late double grace;
   late double sound;
@@ -48,6 +49,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
     grace = values.grace;
     camera = values.camera;
     location = values.location;
+    mic = values.mic;
     sound = values.sound;
     vibration = values.vibration;
     challengeType = values.challengeType;
@@ -67,6 +69,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
         grace: grace,
         camera: camera,
         location: location,
+        mic: mic,
         sound: sound,
         vibration: vibration,
         challengeType: challengeType,

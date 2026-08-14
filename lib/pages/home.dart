@@ -70,6 +70,7 @@ class _HomeState extends State<Home> {
         grace: _settingsService.getActiveGrace(),
         camera: _settingsService.getActiveCameraEnabled(),
         location: _settingsService.getActiveLocationEnabled(),
+        mic: _settingsService.getActiveMicEnabled(),
         sound: _settingsService.getActiveSound(),
         vibration: _settingsService.getActiveVibrationConfig(),
         challengeType: _settingsService.getActiveChallengeType(),
@@ -85,6 +86,7 @@ class _HomeState extends State<Home> {
     await _settingsService.setActiveGrace(values.grace);
     await _settingsService.setActiveCameraEnabled(values.camera);
     await _settingsService.setActiveLocationEnabled(values.location);
+    await _settingsService.setActiveMicEnabled(values.mic);
     await _settingsService.setActiveSound(values.sound);
     await _settingsService.setActiveVibrationConfig(values.vibration);
     await _settingsService.setActiveChallengeType(values.challengeType);
@@ -103,6 +105,7 @@ class _HomeState extends State<Home> {
       grace: _settingsService.getActiveGrace(),
       camera: _settingsService.getActiveCameraEnabled(),
       location: _settingsService.getActiveLocationEnabled(),
+      mic: _settingsService.getActiveMicEnabled(),
       sound: _settingsService.getActiveSound(),
       vibration: _settingsService.getActiveVibrationConfig(),
       challengeType: _settingsService.getActiveChallengeType(),
@@ -118,11 +121,15 @@ class _HomeState extends State<Home> {
     final cameraWanted = _config.camera && _settingsService.isCameraAccessEnabled();
     final locationWanted =
         _config.location && _settingsService.isLocationServiceEnabled();
+    final micWanted = _config.mic && _settingsService.isMicrophoneAccessEnabled();
     if (cameraWanted && !await _permissionsService.hasCamera()) {
       if (!await _permissionsService.requestCamera()) return false;
     }
     if (locationWanted && !await _permissionsService.hasLocation()) {
       if (!await _permissionsService.requestLocation()) return false;
+    }
+    if (micWanted && !await _permissionsService.hasMic()) {
+      if (!await _permissionsService.requestMic()) return false;
     }
     return true;
   }
@@ -141,7 +148,7 @@ class _HomeState extends State<Home> {
           const SnackBar(
             content: Text(
               'BRB needs the permissions for the options you enabled '
-              '(camera/location) to arm with them.',
+              '(camera/location/microphone) to arm with them.',
             ),
           ),
         );
@@ -172,6 +179,7 @@ class _HomeState extends State<Home> {
       cameraEnabled: _config.camera && _settingsService.isCameraAccessEnabled(),
       locationEnabled:
           _config.location && _settingsService.isLocationServiceEnabled(),
+      micEnabled: _config.mic && _settingsService.isMicrophoneAccessEnabled(),
       challengeType: _config.challengeType,
     );
   }

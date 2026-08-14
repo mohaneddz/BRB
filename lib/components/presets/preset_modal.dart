@@ -13,6 +13,7 @@ Future<void> showPresetModal({
   String initialChallengeType = 'none',
   bool initialCamera = false,
   bool initialLocation = false,
+  bool initialMic = false,
   double initialVolume = 0.5,
   double initialSound = 0.5,
   String initialDistance = '1m',
@@ -24,6 +25,7 @@ Future<void> showPresetModal({
     required String challengeType,
     required bool camera,
     required bool location,
+    required bool mic,
     required double volume,
     required double sound,
     required String distance,
@@ -37,6 +39,7 @@ Future<void> showPresetModal({
   ChallengeType challengeType = ChallengeType.fromName(initialChallengeType);
   bool camera = initialCamera;
   bool location = initialLocation;
+  bool mic = initialMic;
   double volume = initialVolume;
   double sound = initialSound;
   String distance = initialDistance;
@@ -384,6 +387,23 @@ Future<void> showPresetModal({
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+
+                    // Record Audio checkbox (spanning full width)
+                    MySettingRow(
+                      label: 'Record Audio',
+                      icon: LucideIcons.mic,
+                      inline: true,
+                      child: Checkbox(
+                        value: mic,
+                        onChanged: (val) => setState(() => mic = val!),
+                        activeColor: Colors.red,
+                        checkColor: Colors.white,
+                        side: const BorderSide(color: Colors.red, width: 1.5),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    ),
                     const SizedBox(height: 24),
 
                     // Challenge dropdown (spanning full width)
@@ -467,6 +487,7 @@ Future<void> showPresetModal({
                             challengeType: challengeType.name,
                             camera: camera,
                             location: location,
+                            mic: mic,
                             volume: volume,
                             sound: sound,
                             distance: distance,

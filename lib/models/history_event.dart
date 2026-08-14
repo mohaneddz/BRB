@@ -4,6 +4,7 @@ class HistoryEvent {
   final double? longitude;
   final String mode;
   final String? photoPath;
+  final String? audioPath;
   final String? placeName;
 
   const HistoryEvent({
@@ -12,6 +13,7 @@ class HistoryEvent {
     this.latitude,
     this.longitude,
     this.photoPath,
+    this.audioPath,
     this.placeName,
   });
 
@@ -21,6 +23,7 @@ class HistoryEvent {
     'longitude': longitude,
     'mode': mode,
     'photoPath': photoPath,
+    'audioPath': audioPath,
     'placeName': placeName,
   };
 
@@ -30,6 +33,7 @@ class HistoryEvent {
     longitude: (json['longitude'] as num?)?.toDouble(),
     mode: json['mode'] as String,
     photoPath: json['photoPath'] as String?,
+    audioPath: json['audioPath'] as String?,
     placeName: json['placeName'] as String?,
   );
 }

@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:brb/models/history_event.dart';
 import 'package:brb/pages/alarm.dart';
 import 'package:brb/utils/settings_utis.dart';
+import 'package:brb/utils/tools/audio_utils.dart';
 import 'package:brb/utils/tools/camera_utils.dart';
 import 'package:brb/utils/tools/gps_utils.dart';
 import 'package:brb/utils/tools/history_service.dart';
@@ -36,6 +37,7 @@ class AlarmController {
     required bool soundEnabled,
     required bool cameraEnabled,
     required bool locationEnabled,
+    required bool micEnabled,
     required String challengeType,
   }) async {
     if (vibrationEnabled) {
@@ -49,6 +51,7 @@ class AlarmController {
     }
 
     final photoPath = cameraEnabled ? await _tryCapturePhoto() : null;
+    final audioPath = micEnabled ? await _tryRecordAudio() : null;
 
     double? lat;
     double? lng;
@@ -74,6 +77,7 @@ class AlarmController {
         latitude: lat,
         longitude: lng,
         photoPath: photoPath,
+        audioPath: audioPath,
         placeName: placeName,
       ),
     );
@@ -116,6 +120,14 @@ class AlarmController {
         place.country,
       ].where((p) => p != null && p.isNotEmpty).toList();
       return parts.isEmpty ? null : parts.join(', ');
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<String?> _tryRecordAudio() async {
+    try {
+      return await AudioRecorderService().recordClip();
     } catch (_) {
       return null;
     }

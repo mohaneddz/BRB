@@ -70,6 +70,7 @@ class _HistoryState extends State<History> {
                               location: event.placeName ??
                                   '${event.mode} mode alarm',
                               dateTime: event.timestamp,
+                              audioPath: event.audioPath,
                             ),
                           )
                           .toList(),

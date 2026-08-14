@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:brb/components/ui/toast.dart'; // <-- Add this import
 import 'package:brb/styles/style.dart';
 
@@ -9,12 +11,14 @@ class EventCard extends StatefulWidget {
   final String coordinates;
   final String location;
   final DateTime? dateTime;
+  final String? audioPath;
 
   const EventCard({
     super.key,
     this.coordinates = '38.45651 - 8.1548',
     this.location = 'Sidi Abdellah',
     this.dateTime,
+    this.audioPath,
   });
 
   @override
@@ -23,6 +27,29 @@ class EventCard extends StatefulWidget {
 
 class _EventCardState extends State<EventCard> {
   OverlayEntry? _toastEntry;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _playingAudio = false;
+
+  Future<void> _toggleAudio() async {
+    final path = widget.audioPath;
+    if (path == null) return;
+    if (_playingAudio) {
+      await _audioPlayer.stop();
+      if (mounted) setState(() => _playingAudio = false);
+      return;
+    }
+    setState(() => _playingAudio = true);
+    await _audioPlayer.play(DeviceFileSource(path));
+    _audioPlayer.onPlayerComplete.first.then((_) {
+      if (mounted) setState(() => _playingAudio = false);
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   void _showToast(String message, ToastType type) {
     _toastEntry?.remove();
@@ -255,6 +282,30 @@ class _EventCardState extends State<EventCard> {
                         ),
                       ],
                     ),
+                    if (widget.audioPath != null) ...[
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: _toggleAudio,
+                        child: Row(
+                          children: [
+                            Icon(
+                              _playingAudio ? LucideIcons.square : LucideIcons.play,
+                              size: 14,
+                              color: AppColors.primaryText(context),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              _playingAudio ? 'Playing...' : 'Play audio evidence',
+                              style: TextStyle(
+                                color: AppColors.secondaryText(context),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
