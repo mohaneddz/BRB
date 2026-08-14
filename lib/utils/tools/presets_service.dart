@@ -19,7 +19,7 @@ class PresetsService {
     await prefs.setString(_key, encoded);
   }
 
-  List<Preset> _defaults() => const [
+  List<Preset> _defaults() => [
     Preset(
       title: 'GYM',
       vibration: true,
