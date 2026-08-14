@@ -67,7 +67,8 @@ class _HistoryState extends State<History> {
                                       event.longitude != null
                                   ? '${event.latitude!.toStringAsFixed(5)} - ${event.longitude!.toStringAsFixed(5)}'
                                   : 'No location captured',
-                              location: '${event.mode} mode alarm',
+                              location: event.placeName ??
+                                  '${event.mode} mode alarm',
                               dateTime: event.timestamp,
                             ),
                           )

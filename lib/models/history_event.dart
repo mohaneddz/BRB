@@ -4,6 +4,7 @@ class HistoryEvent {
   final double? longitude;
   final String mode;
   final String? photoPath;
+  final String? placeName;
 
   const HistoryEvent({
     required this.timestamp,
@@ -11,6 +12,7 @@ class HistoryEvent {
     this.latitude,
     this.longitude,
     this.photoPath,
+    this.placeName,
   });
 
   Map<String, dynamic> toJson() => {
@@ -19,6 +21,7 @@ class HistoryEvent {
     'longitude': longitude,
     'mode': mode,
     'photoPath': photoPath,
+    'placeName': placeName,
   };
 
   factory HistoryEvent.fromJson(Map<String, dynamic> json) => HistoryEvent(
@@ -27,5 +30,6 @@ class HistoryEvent {
     longitude: (json['longitude'] as num?)?.toDouble(),
     mode: json['mode'] as String,
     photoPath: json['photoPath'] as String?,
+    placeName: json['placeName'] as String?,
   );
 }

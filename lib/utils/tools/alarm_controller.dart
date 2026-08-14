@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:vibration/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,11 +51,13 @@ class AlarmController {
 
     double? lat;
     double? lng;
+    String? placeName;
     if (locationEnabled) {
       try {
         final position = await gpsService.getCurrentPosition();
         lat = position.latitude;
         lng = position.longitude;
+        placeName = await _tryReverseGeocode(lat, lng);
       } catch (_) {
         // Location unavailable (permission revoked mid-flight, no fix, etc.)
         // - the alarm still fires without coordinates.
@@ -70,6 +73,7 @@ class AlarmController {
         latitude: lat,
         longitude: lng,
         photoPath: photoPath,
+        placeName: placeName,
       ),
     );
 
@@ -95,6 +99,25 @@ class AlarmController {
       }
     }
     SystemSound.play(SystemSoundType.alert);
+  }
+
+  /// Best-effort reverse geocode - returns null on no network, no
+  /// geocoder available on the device, or any other failure, in which
+  /// case the event is still logged, just with raw coordinates only.
+  Future<String?> _tryReverseGeocode(double lat, double lng) async {
+    try {
+      final placemarks = await placemarkFromCoordinates(lat, lng);
+      if (placemarks.isEmpty) return null;
+      final place = placemarks.first;
+      final parts = [
+        place.street,
+        place.locality,
+        place.country,
+      ].where((p) => p != null && p.isNotEmpty).toList();
+      return parts.isEmpty ? null : parts.join(', ');
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<String?> _tryCapturePhoto() async {
