@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/components/history/event_card.dart';
 import 'package:brb/models/history_event.dart';
@@ -33,10 +34,66 @@ class _HistoryState extends State<History> {
     });
   }
 
+  Future<void> _deleteAt(int index) async {
+    final prefs = await SharedPreferences.getInstance();
+    await _historyService.removeAt(prefs, index);
+    await _load();
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Event deleted')));
+  }
+
+  Future<void> _confirmClearAll() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Clear History'),
+        content: const Text(
+          'This deletes every logged alarm event. It cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.secondaryText(dialogContext)),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text(
+              'Clear All',
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    final prefs = await SharedPreferences.getInstance();
+    await _historyService.clear(prefs);
+    await _load();
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('History cleared')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.navHistory)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.navHistory),
+        actions: [
+          if (_events.isNotEmpty)
+            IconButton(
+              icon: const Icon(LucideIcons.trash2),
+              tooltip: 'Clear All',
+              onPressed: _confirmClearAll,
+            ),
+        ],
+      ),
       body: _loading
           ? const Center(
               child: CircularProgressIndicator(color: AppColors.accent),
@@ -61,20 +118,39 @@ class _HistoryState extends State<History> {
                     )
                   : ListView(
                       padding: const EdgeInsets.all(16),
-                      children: _events
-                          .map(
-                            (event) => EventCard(
-                              coordinates: event.latitude != null &&
-                                      event.longitude != null
-                                  ? '${event.latitude!.toStringAsFixed(5)} - ${event.longitude!.toStringAsFixed(5)}'
-                                  : 'No location captured',
-                              location: event.placeName ??
-                                  '${event.mode} mode alarm',
-                              dateTime: event.timestamp,
-                              audioPath: event.audioPath,
+                      children: List.generate(_events.length, (i) {
+                        final event = _events[i];
+                        return Dismissible(
+                          key: ValueKey(
+                            '${event.timestamp.toIso8601String()}_$i',
+                          ),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 32),
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          )
-                          .toList(),
+                            child: const Icon(
+                              LucideIcons.trash2,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onDismissed: (_) => _deleteAt(i),
+                          child: EventCard(
+                            coordinates: event.latitude != null &&
+                                    event.longitude != null
+                                ? '${event.latitude!.toStringAsFixed(5)} - ${event.longitude!.toStringAsFixed(5)}'
+                                : 'No location captured',
+                            location: event.placeName ??
+                                '${event.mode} mode alarm',
+                            dateTime: event.timestamp,
+                            audioPath: event.audioPath,
+                          ),
+                        );
+                      }),
                     ),
             ),
     );

@@ -26,6 +26,17 @@ class HistoryService {
     await prefs.setString(_key, encoded);
   }
 
+  /// [index] is into the newest-first list [load] returns.
+  Future<void> removeAt(SharedPreferences prefs, int index) async {
+    final events = load(prefs);
+    if (index < 0 || index >= events.length) return;
+    events.removeAt(index);
+    final encoded = jsonEncode(
+      events.reversed.map((e) => e.toJson()).toList(),
+    );
+    await prefs.setString(_key, encoded);
+  }
+
   Future<void> clear(SharedPreferences prefs) async {
     await prefs.remove(_key);
   }
