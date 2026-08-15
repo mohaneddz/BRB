@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:brb/utils/alarm_tones.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/challenge_service.dart';
@@ -74,6 +77,10 @@ class _SettingsState extends State<Settings> {
   bool _cameraEnabled = true;
   bool _microphoneEnabled = true;
 
+  // About
+  String _appVersion = '';
+  String _buildNumber = '';
+
   @override
   void initState() {
     super.initState();
@@ -91,6 +98,7 @@ class _SettingsState extends State<Settings> {
     if (lang == 'en') lang = 'English';
     if (lang == 'fr') lang = 'French';
     if (!_languages.contains(lang)) lang = 'English';
+    final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       _darkModeEnabled = _settingsService.getDarkMode();
       _selectedLanguage = lang;
@@ -107,6 +115,8 @@ class _SettingsState extends State<Settings> {
       _locationEnabled = _settingsService.isLocationServiceEnabled();
       _cameraEnabled = _settingsService.isCameraAccessEnabled();
       _microphoneEnabled = _settingsService.isMicrophoneAccessEnabled();
+      _appVersion = packageInfo.version;
+      _buildNumber = packageInfo.buildNumber;
       _isLoading = false;
     });
   }
@@ -146,9 +156,9 @@ class _SettingsState extends State<Settings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // General
-            _buildSectionHeader('General'),
+            _buildSectionHeader(l10n.settingsSectionGeneral),
             SwitchTile(
-              title: 'Dark Mode',
+              title: l10n.settingsDarkMode,
               value: _darkModeEnabled,
               onChanged: (value) async {
                 setState(() => _darkModeEnabled = value);
@@ -160,7 +170,7 @@ class _SettingsState extends State<Settings> {
               icon: LucideIcons.moon,
             ),
             SwitchTile(
-              title: 'Floating Notifications',
+              title: l10n.settingsFloatingNotifications,
               value: _floatingNotificationsEnabled,
               onChanged: (value) async {
                 setState(() => _floatingNotificationsEnabled = value);
@@ -183,7 +193,7 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 24),
             // Detection
-            _buildSectionHeader('Detection'),
+            _buildSectionHeader(l10n.settingsSectionDetection),
             SensitivitySliderSection(
               sensitivity: _sensitivity,
               onChanged: (value) async {
@@ -215,7 +225,7 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 24),
 
             // Alarm
-            _buildSectionHeader('Alarm'),
+            _buildSectionHeader(l10n.settingsSectionAlarm),
             AlarmToneSelectorSection(
               selectedAlarmTone: _selectedAlarmTone,
               alarmTones: _alarmTones,
@@ -225,6 +235,11 @@ class _SettingsState extends State<Settings> {
                   await _settingsService.setAlarmTone(value);
                 }
               },
+              onPreview: () async {
+                final asset = builtInToneAssets[_selectedAlarmTone];
+                if (asset == null) return;
+                await AudioPlayer().play(AssetSource(asset));
+              },
             ),
             AlarmSoundPickerSection(
               customToneName: _customToneName,
@@ -232,7 +247,7 @@ class _SettingsState extends State<Settings> {
               onClear: _clearAlarmSound,
             ),
             SwitchTile(
-              title: 'Sound Enabled',
+              title: l10n.settingsSoundEnabled,
               value: _soundEnabled,
               onChanged: (value) async {
                 setState(() => _soundEnabled = value);
@@ -241,7 +256,7 @@ class _SettingsState extends State<Settings> {
               icon: LucideIcons.volume2,
             ),
             SwitchTile(
-              title: 'Vibrate',
+              title: l10n.settingsVibrate,
               value: _vibrateEnabled,
               onChanged: (value) async {
                 setState(() => _vibrateEnabled = value);
@@ -252,10 +267,10 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 24),
 
             // Security
-            _buildSectionHeader('Security'),
+            _buildSectionHeader(l10n.settingsSectionSecurity),
             CustomPinSection(
-              title: 'Custom PIN',
-              hintText: 'Enter 4-6 digit PIN',
+              title: l10n.settingsCustomPin,
+              hintText: l10n.settingsEnterPinHint,
               enabled: _pinEnabled,
               pinController: _pinController,
               obscurePin: _pinObscured,
@@ -271,8 +286,8 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 12),
             CustomPinSection(
-              title: 'Digit Code',
-              hintText: 'Enter 4-6 digit code',
+              title: l10n.settingsDigitCode,
+              hintText: l10n.settingsEnterDigitCodeHint,
               enabled: _digitCodeEnabled,
               pinController: _digitCodeController,
               obscurePin: _digitCodeObscured,
@@ -289,9 +304,9 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 24),
 
             // Functions
-            _buildSectionHeader('Functions'),
+            _buildSectionHeader(l10n.settingsSectionFunctions),
             SwitchTile(
-              title: 'Location Service',
+              title: l10n.settingsLocationService,
               value: _locationEnabled,
               onChanged: (value) async {
                 setState(() => _locationEnabled = value);
@@ -300,7 +315,7 @@ class _SettingsState extends State<Settings> {
               icon: LucideIcons.mapPin,
             ),
             SwitchTile(
-              title: 'Camera Access',
+              title: l10n.settingsCameraAccess,
               value: _cameraEnabled,
               onChanged: (value) async {
                 setState(() => _cameraEnabled = value);
@@ -309,7 +324,7 @@ class _SettingsState extends State<Settings> {
               icon: LucideIcons.camera,
             ),
             SwitchTile(
-              title: 'Microphone Access',
+              title: l10n.settingsMicrophoneAccess,
               value: _microphoneEnabled,
               onChanged: (value) async {
                 setState(() => _microphoneEnabled = value);
@@ -318,8 +333,8 @@ class _SettingsState extends State<Settings> {
               icon: LucideIcons.mic,
             ),
             ActionTile(
-              title: 'Sensor Diagnostics',
-              subtitle: 'Live readout of every sensor BRB uses',
+              title: l10n.settingsSensorDiagnostics,
+              subtitle: l10n.settingsSensorDiagnosticsSubtitle,
               icon: LucideIcons.activity,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const SensorDashboardPage()),
@@ -328,31 +343,31 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 24),
 
             // Support
-            _buildSectionHeader('Support'),
+            _buildSectionHeader(l10n.settingsSectionSupport),
             ActionTile(
-              title: 'Star on GitHub',
-              subtitle: 'Help us grow by starring the project!',
+              title: l10n.settingsStarOnGithub,
+              subtitle: l10n.settingsStarOnGithubSubtitle,
               icon: LucideIcons.github,
               onTap: () => _showGitHubDialog(),
             ),
             ActionTile(
-              title: 'Report Issue',
-              subtitle: 'Found a bug? Let us know',
+              title: l10n.settingsReportIssue,
+              subtitle: l10n.settingsReportIssueSubtitle,
               icon: LucideIcons.bug,
               onTap: () => _showReportDialog(),
             ),
             ActionTile(
-              title: 'Help & FAQ',
-              subtitle: 'Get help using BRB',
+              title: l10n.settingsHelpFaq,
+              subtitle: l10n.settingsHelpFaqSubtitle,
               icon: LucideIcons.helpCircle,
               onTap: () => _showHelpDialog(),
             ),
             const SizedBox(height: 24),
 
             // About
-            _buildSectionHeader('About'),
-            InfoTile(title: 'Version', value: '1.0.0'),
-            InfoTile(title: 'Build', value: '2025.07.09'),
+            _buildSectionHeader(l10n.settingsSectionAbout),
+            InfoTile(title: l10n.settingsVersion, value: _appVersion),
+            InfoTile(title: l10n.settingsBuild, value: _buildNumber),
             const SizedBox(height: 32),
           ],
         ),
@@ -396,21 +411,20 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showGitHubDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Star on GitHub'),
-        content: const Text(
-          'Help us grow by starring the BRB project on GitHub! Your support means everything to us.',
-        ),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.settingsStarOnGithub),
+        content: Text(l10n.settingsGithubDialogBody),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Later', style: TextStyle(color: AppColors.secondaryText(context))),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.dialogLater, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               await launchUrl(
                 Uri.parse('https://github.com/mohaneddz/BRB'),
                 mode: LaunchMode.externalApplication,
@@ -420,7 +434,7 @@ class _SettingsState extends State<Settings> {
               backgroundColor: AppColors.accent,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Star Now'),
+            child: Text(l10n.dialogStarNow),
           ),
         ],
       ),
@@ -428,21 +442,20 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showReportDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Report Issue'),
-        content: const Text(
-          'Found a bug or have a suggestion? We\'d love to hear from you!',
-        ),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.settingsReportIssue),
+        content: Text(l10n.settingsReportDialogBody),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.dialogCancel, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               await launchUrl(
                 Uri.parse('https://github.com/mohaneddz/BRB/issues/new'),
                 mode: LaunchMode.externalApplication,
@@ -452,7 +465,7 @@ class _SettingsState extends State<Settings> {
               backgroundColor: AppColors.accent,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Report'),
+            child: Text(l10n.dialogReport),
           ),
         ],
       ),
@@ -460,21 +473,20 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showHelpDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Help & FAQ'),
-        content: const Text(
-          'Need help using BRB? Check out our documentation and frequently asked questions.',
-        ),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.settingsHelpFaq),
+        content: Text(l10n.settingsHelpDialogBody),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.dialogCancel, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               await launchUrl(
                 Uri.parse('https://github.com/mohaneddz/BRB#readme'),
                 mode: LaunchMode.externalApplication,
@@ -484,7 +496,7 @@ class _SettingsState extends State<Settings> {
               backgroundColor: AppColors.accent,
               foregroundColor: Colors.white,
             ),
-            child: const Text('View Help'),
+            child: Text(l10n.dialogViewHelp),
           ),
         ],
       ),

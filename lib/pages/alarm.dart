@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:brb/styles/style.dart';
 import 'package:brb/models/challenge_type.dart';
 import 'package:brb/utils/tools/challenge_service.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 /// Full-screen alarm shown when [DetectionService] fires. Blocks the back
 /// gesture so a thief can't just navigate away, and requires the triggering
@@ -56,11 +57,15 @@ class _AlarmScreenState extends State<AlarmScreen> {
     });
   }
 
-  String get _hintText =>
-      _challenge == ChallengeType.digitCode ? 'Digit Code' : 'PIN';
+  String get _hintText {
+    final l10n = AppLocalizations.of(context)!;
+    return _challenge == ChallengeType.digitCode ? l10n.alarmHintDigitCode : l10n.alarmHintPin;
+  }
 
-  String get _wrongMessage =>
-      _challenge == ChallengeType.digitCode ? 'Wrong Digit Code' : 'Wrong PIN';
+  String get _wrongMessage {
+    final l10n = AppLocalizations.of(context)!;
+    return _challenge == ChallengeType.digitCode ? l10n.alarmWrongDigitCode : l10n.alarmWrongPin;
+  }
 
   Future<void> _dismiss() async {
     if (_challengeRequired) {
@@ -86,6 +91,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -105,18 +111,18 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           size: 96,
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'ALARM',
-                          style: TextStyle(
+                        Text(
+                          l10n.alarmTitle,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Motion detected while armed.',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        Text(
+                          l10n.alarmSubtitle,
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 32),
@@ -140,7 +146,19 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide.none,
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(color: Colors.white, width: 2),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(color: Colors.white, width: 2),
+                              ),
                               errorText: _error,
+                              errorStyle: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -154,9 +172,9 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               foregroundColor: AppColors.primary,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            child: const Text(
-                              'DISMISS',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.alarmDismiss,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brb/components/settings/labeled_slider_section.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 /// Same knob as Home's per-config "Delay" slider - both read/write the
 /// same persisted value, this is just a second, more discoverable place
@@ -13,7 +14,7 @@ class DetectionDelaySliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabeledSliderSection(
-      title: 'Detection Delay',
+      title: AppLocalizations.of(context)!.settingsDetectionDelay,
       value: detectionDelay,
       min: 0.5,
       max: 10.0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brb/components/settings/labeled_slider_section.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 /// How many steps count as "walking away" while armed in Steps mode.
 class StepsThresholdSliderSection extends StatelessWidget {
@@ -11,7 +12,7 @@ class StepsThresholdSliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabeledSliderSection(
-      title: 'Steps Threshold (Steps mode)',
+      title: AppLocalizations.of(context)!.settingsStepsThreshold,
       value: stepsThreshold.toDouble(),
       min: 1,
       max: 20,

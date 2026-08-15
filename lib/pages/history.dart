@@ -35,36 +35,36 @@ class _HistoryState extends State<History> {
   }
 
   Future<void> _deleteAt(int index) async {
+    final l10n = AppLocalizations.of(context)!;
     final prefs = await SharedPreferences.getInstance();
     await _historyService.removeAt(prefs, index);
     await _load();
     if (!mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text('Event deleted')));
+    ).showSnackBar(SnackBar(content: Text(l10n.historyEventDeleted)));
   }
 
   Future<void> _confirmClearAll() async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Clear History'),
-        content: const Text(
-          'This deletes every logged alarm event. It cannot be undone.',
-        ),
+        title: Text(l10n.historyClearDialogTitle),
+        content: Text(l10n.historyClearDialogBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
             child: Text(
-              'Cancel',
+              l10n.dialogCancel,
               style: TextStyle(color: AppColors.secondaryText(dialogContext)),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: const Text(
-              'Clear All',
-              style: TextStyle(color: Colors.redAccent),
+            child: Text(
+              l10n.historyClearAll,
+              style: const TextStyle(color: Colors.redAccent),
             ),
           ),
         ],
@@ -77,19 +77,20 @@ class _HistoryState extends State<History> {
     if (!mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text('History cleared')));
+    ).showSnackBar(SnackBar(content: Text(l10n.historyCleared)));
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.navHistory),
+        title: Text(l10n.navHistory),
         actions: [
           if (_events.isNotEmpty)
             IconButton(
               icon: const Icon(LucideIcons.trash2),
-              tooltip: 'Clear All',
+              tooltip: l10n.historyClearAll,
               onPressed: _confirmClearAll,
             ),
         ],
@@ -107,8 +108,7 @@ class _HistoryState extends State<History> {
                           padding: const EdgeInsets.only(top: 120),
                           child: Center(
                             child: Text(
-                              'No alarms yet.\nEvents show up here once BRB '
-                              'is armed and triggers.',
+                              l10n.historyEmptyTitle,
                               textAlign: TextAlign.center,
                               style: TextStyle(color: AppColors.secondaryText(context)),
                             ),
@@ -143,9 +143,9 @@ class _HistoryState extends State<History> {
                             coordinates: event.latitude != null &&
                                     event.longitude != null
                                 ? '${event.latitude!.toStringAsFixed(5)} - ${event.longitude!.toStringAsFixed(5)}'
-                                : 'No location captured',
+                                : l10n.historyNoLocationCaptured,
                             location: event.placeName ??
-                                '${event.mode} mode alarm',
+                                l10n.historyModeAlarm(event.mode),
                             dateTime: event.timestamp,
                             audioPath: event.audioPath,
                           ),

@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:brb/models/history_event.dart';
 import 'package:brb/pages/alarm.dart';
+import 'package:brb/utils/alarm_tones.dart';
 import 'package:brb/utils/settings_utis.dart';
 import 'package:brb/utils/tools/audio_utils.dart';
 import 'package:brb/utils/tools/camera_utils.dart';
@@ -98,6 +99,16 @@ class AlarmController {
       try {
         final player = AudioPlayer();
         await player.play(DeviceFileSource(customPath));
+        return;
+      } catch (_) {
+        // Fall through to the built-in tone below.
+      }
+    }
+    final asset = builtInToneAssets[settingsService.getAlarmTone()];
+    if (asset != null) {
+      try {
+        final player = AudioPlayer();
+        await player.play(AssetSource(asset));
         return;
       } catch (_) {
         // Fall through to the system alert sound below.

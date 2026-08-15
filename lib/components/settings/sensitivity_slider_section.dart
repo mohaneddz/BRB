@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brb/components/settings/labeled_slider_section.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class SensitivitySliderSection extends StatelessWidget {
   final double sensitivity;
@@ -10,7 +11,7 @@ class SensitivitySliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabeledSliderSection(
-      title: 'Motion Sensitivity',
+      title: AppLocalizations.of(context)!.settingsMotionSensitivity,
       value: sensitivity,
       min: 0.1,
       max: 1.0,

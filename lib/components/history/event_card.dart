@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:brb/components/ui/toast.dart'; // <-- Add this import
 import 'package:brb/styles/style.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class EventCard extends StatefulWidget {
   final String coordinates;
@@ -295,7 +296,9 @@ class _EventCardState extends State<EventCard> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              _playingAudio ? 'Playing...' : 'Play audio evidence',
+                              _playingAudio
+                                  ? AppLocalizations.of(context)!.historyPlaying
+                                  : AppLocalizations.of(context)!.historyPlayAudio,
                               style: TextStyle(
                                 color: AppColors.secondaryText(context),
                                 fontWeight: FontWeight.w700,

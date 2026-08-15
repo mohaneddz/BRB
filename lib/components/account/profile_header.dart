@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
+import 'package:brb/l10n/app_localizations.dart';
 
 class ProfileHeader extends StatefulWidget {
   final String fullName;
@@ -96,7 +97,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.dialogCancel),
             ),
             TextButton(
               onPressed: () async {
@@ -124,7 +125,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 }
                 if (mounted) Navigator.of(context).pop();
               },
-              child: const Text('Capture'),
+              child: Text(AppLocalizations.of(context)!.dialogCapture),
             ),
           ],
         );
@@ -144,7 +145,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           children: [
             ListTile(
               leading: const Icon(LucideIcons.camera),
-              title: const Text('Take a new picture'),
+              title: Text(AppLocalizations.of(context)!.profileTakePicture),
               onTap: () async {
                 Navigator.of(context).pop();
                 await _takePicture();
@@ -152,7 +153,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             ),
             ListTile(
               leading: const Icon(LucideIcons.image),
-              title: const Text('Import from gallery'),
+              title: Text(AppLocalizations.of(context)!.profileImportGallery),
               onTap: () async {
                 Navigator.of(context).pop();
                 await _pickImageFromGallery();
@@ -249,13 +250,13 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _StatItem(label: 'Joined', value: widget.joinDate),
+              _StatItem(label: AppLocalizations.of(context)!.accountJoined, value: widget.joinDate),
               Container(
                 height: 40,
                 width: 1,
                 color: Colors.grey.withAlpha((0.3 * 255).toInt()),
               ),
-              const _StatItem(label: 'Status', value: 'Active'),
+              _StatItem(label: AppLocalizations.of(context)!.accountStatus, value: AppLocalizations.of(context)!.accountActive),
             ],
           ),
         ],

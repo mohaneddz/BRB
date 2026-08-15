@@ -5,6 +5,7 @@ import 'package:brb/components/ui/dropdown.dart';
 import 'package:brb/components/home/settings_row.dart';
 import 'package:brb/models/config_values.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 class ConfigurationCard extends StatefulWidget {
   final ConfigValues initialValues;
@@ -84,6 +85,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // A common SliderTheme to reduce code duplication and improve visuals.
     final sliderThemeData = SliderTheme.of(context).copyWith(
       trackHeight: 2,
@@ -107,7 +109,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
           padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
           child: Center(
             child: Text(
-              'Current Configuration',
+              l10n.homeCurrentConfiguration,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -175,7 +177,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         MySettingRow(
-                          label: 'Delay',
+                          label: l10n.fieldDelay,
                           icon: LucideIcons.timer, // Add icon
                           child: Row(
                             children: [
@@ -209,7 +211,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                         ),
                         const SizedBox(height: 10),
                         MySettingRow(
-                          label: 'Grace',
+                          label: l10n.fieldGrace,
                           icon: LucideIcons.percent, // Add icon
                           child: Row(
                             children: [
@@ -241,7 +243,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                         ),
                         const SizedBox(height: 10),
                         MySettingRow(
-                          label: 'Camera',
+                          label: l10n.fieldCamera,
                           icon: LucideIcons.camera, // Add icon
                           inline: true,
                           child: Checkbox(
@@ -280,7 +282,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         MySettingRow(
-                          label: 'Sound',
+                          label: l10n.fieldSound,
                           icon: LucideIcons.volume2, // Add icon
                           child: Row(
                             children: [
@@ -312,7 +314,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                         ),
                         const SizedBox(height: 10),
                         MySettingRow(
-                          label: 'Vibration',
+                          label: l10n.fieldVibration,
                           icon: LucideIcons.vibrate, // Add icon
                           child: Row(
                             children: [
@@ -346,7 +348,7 @@ class ConfigurationCardState extends State<ConfigurationCard> {
                         ),
                         const SizedBox(height: 10),
                         MySettingRow(
-                          label: 'Location',
+                          label: l10n.fieldLocation,
                           icon: LucideIcons.mapPin, // Add icon
                           inline: true,
                           child: Checkbox(

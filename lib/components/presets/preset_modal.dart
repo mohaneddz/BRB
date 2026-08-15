@@ -4,6 +4,7 @@ import 'package:brb/styles/style.dart';
 import 'package:brb/components/home/settings_row.dart';
 import 'package:brb/models/challenge_type.dart';
 import 'package:brb/utils/tools/challenge_service.dart';
+import 'package:brb/l10n/app_localizations.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 Future<void> showPresetModal({
@@ -53,6 +54,7 @@ Future<void> showPresetModal({
   final digitCodeConfigured = challengeService.isDigitCodeEnabled(prefs) &&
       (challengeService.getDigitCode(prefs)?.isNotEmpty ?? false);
   if (!context.mounted) return;
+  final l10n = AppLocalizations.of(context)!;
 
   final modes = ['Pocket', 'Sensitive', 'Distant', 'Steps'];
 
@@ -95,7 +97,7 @@ Future<void> showPresetModal({
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      initialTitle == null ? 'Add Preset' : 'Edit Preset',
+                      initialTitle == null ? l10n.presetAddTitle : l10n.presetEditTitle,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -106,7 +108,7 @@ Future<void> showPresetModal({
                     TextField(
                       controller: titleController,
                       decoration: InputDecoration(
-                        labelText: 'Title',
+                        labelText: l10n.presetTitleFieldLabel,
                         labelStyle: TextStyle(color: AppColors.secondaryText(context)),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.red),
@@ -126,7 +128,7 @@ Future<void> showPresetModal({
 
                     // Mode dropdown (spanning full width)
                     MySettingRow(
-                      label: 'Mode',
+                      label: l10n.fieldMode,
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.background(context),
@@ -183,7 +185,7 @@ Future<void> showPresetModal({
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               MySettingRow(
-                                label: 'Delay',
+                                label: l10n.fieldDelay,
                                 icon: LucideIcons.timer,
                                 child: Row(
                                   children: [
@@ -223,7 +225,7 @@ Future<void> showPresetModal({
                               ),
                               const SizedBox(height: 10),
                               MySettingRow(
-                                label: 'Grace',
+                                label: l10n.fieldGrace,
                                 icon: LucideIcons.percent,
                                 child: Row(
                                   children: [
@@ -263,7 +265,7 @@ Future<void> showPresetModal({
                               ),
                               const SizedBox(height: 10),
                               MySettingRow(
-                                label: 'Camera',
+                                label: l10n.fieldCamera,
                                 icon: LucideIcons.camera,
                                 inline: true,
                                 child: Checkbox(
@@ -298,7 +300,7 @@ Future<void> showPresetModal({
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               MySettingRow(
-                                label: 'Sound',
+                                label: l10n.fieldSound,
                                 icon: LucideIcons.volume2,
                                 child: Row(
                                   children: [
@@ -330,7 +332,7 @@ Future<void> showPresetModal({
                               ),
                               const SizedBox(height: 10),
                               MySettingRow(
-                                label: 'Vibration',
+                                label: l10n.fieldVibration,
                                 icon: LucideIcons.vibrate,
                                 child: Row(
                                   children: [
@@ -364,7 +366,7 @@ Future<void> showPresetModal({
                               ),
                               const SizedBox(height: 10),
                               MySettingRow(
-                                label: 'Location',
+                                label: l10n.fieldLocation,
                                 icon: LucideIcons.mapPin,
                                 inline: true,
                                 child: Checkbox(
@@ -391,7 +393,7 @@ Future<void> showPresetModal({
 
                     // Record Audio checkbox (spanning full width)
                     MySettingRow(
-                      label: 'Record Audio',
+                      label: l10n.fieldRecordAudio,
                       icon: LucideIcons.mic,
                       inline: true,
                       child: Checkbox(
@@ -408,7 +410,7 @@ Future<void> showPresetModal({
 
                     // Challenge dropdown (spanning full width)
                     MySettingRow(
-                      label: 'Challenge',
+                      label: l10n.fieldChallenge,
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.background(context),
@@ -456,7 +458,7 @@ Future<void> showPresetModal({
                       Padding(
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
-                          'No PIN set yet - set one in Settings > Security.',
+                          l10n.challengeNoPinWarning,
                           style: TextStyle(color: AppColors.secondaryText(context), fontSize: 11),
                         ),
                       ),
@@ -464,7 +466,7 @@ Future<void> showPresetModal({
                       Padding(
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
-                          'No Digit Code set yet - set one in Settings > Security.',
+                          l10n.challengeNoDigitCodeWarning,
                           style: TextStyle(color: AppColors.secondaryText(context), fontSize: 11),
                         ),
                       ),
@@ -496,8 +498,8 @@ Future<void> showPresetModal({
                           );
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'Save',
+                        child: Text(
+                          l10n.buttonSave,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

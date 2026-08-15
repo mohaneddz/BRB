@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brb/components/settings/labeled_slider_section.dart';
+import 'package:brb/l10n/app_localizations.dart';
 
 /// Caps the range Home's per-config "Grace" slider maps onto for
 /// Distant mode (Grace 0..1 -> 0..maxDistanceMeters).
@@ -12,7 +13,7 @@ class MaxDistanceSliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabeledSliderSection(
-      title: 'Max Distance (Distant mode)',
+      title: AppLocalizations.of(context)!.settingsMaxDistance,
       value: maxDistanceMeters,
       min: 1,
       max: 30,

@@ -48,6 +48,7 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // Only load once
     if (_isLoading) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -81,78 +82,78 @@ class _AccountState extends State<Account> {
             const SizedBox(height: 32),
 
             InfoSection(
-              title: 'Personal Information',
+              title: l10n.accountPersonalInfo,
               children: [
                 ProfileInfoTile(
                   icon: LucideIcons.user,
-                  title: 'Full Name',
+                  title: l10n.accountFullName,
                   subtitle: _fullName,
-                  onTap: () => _showEditDialog('Full Name', _fullName, (value) async {
+                  onTap: () => _showEditDialog(l10n.accountFullName, _fullName, (value) async {
                     setState(() => _fullName = value);
                     await _settingsService.setFullName(value);
                   }),
                 ),
                 ProfileInfoTile(
                   icon: LucideIcons.atSign,
-                  title: 'Username',
+                  title: l10n.accountUsername,
                   subtitle: '@$_username',
-                  onTap: () => _showEditDialog('Username', _username, (value) async {
+                  onTap: () => _showEditDialog(l10n.accountUsername, _username, (value) async {
                     setState(() => _username = value);
                     await _settingsService.setUsername(value);
                   }),
                 ),
                 ProfileInfoTile(
                   icon: LucideIcons.mail,
-                  title: 'Email',
+                  title: l10n.accountEmail,
                   subtitle: _email,
-                  onTap: () => _showEditDialog('Email', _email, (value) async {
+                  onTap: () => _showEditDialog(l10n.accountEmail, _email, (value) async {
                     setState(() => _email = value);
                     await _settingsService.setEmail(value);
                   }),
                 ),
                 ProfileInfoTile(
                   icon: LucideIcons.phone,
-                  title: 'Phone Number',
+                  title: l10n.accountPhoneNumber,
                   subtitle: _phoneNumber,
-                  onTap: () => _showEditDialog('Phone Number', _phoneNumber, (value) async {
+                  onTap: () => _showEditDialog(l10n.accountPhoneNumber, _phoneNumber, (value) async {
                     setState(() => _phoneNumber = value);
                     await _settingsService.setPhoneNumber(value);
                   }),
                 ),
                 ProfileInfoTile(
                   icon: LucideIcons.fileText,
-                  title: 'Bio',
+                  title: l10n.accountBio,
                   subtitle: _bio,
-                  onTap: () => _showEditDialog('Bio', _bio, (value) async {
+                  onTap: () => _showEditDialog(l10n.accountBio, _bio, (value) async {
                     setState(() => _bio = value);
                     await _settingsService.setBio(value);
                   }),
                 ),
                 ProfileInfoTile(
                   icon: LucideIcons.key,
-                  title: 'Firebase Key',
-                  subtitle: _firebaseKey.isNotEmpty ? _firebaseKey : 'Not set',
+                  title: l10n.accountFirebaseKey,
+                  subtitle: _firebaseKey.isNotEmpty ? _firebaseKey : l10n.accountNotSet,
                   onTap: () async {
                     final controller = TextEditingController(text: _firebaseKey);
                     String? newKey = await showDialog<String>(
                       context: context,
                       builder: (dialogContext) => AlertDialog(
-                        title: const Text('Edit Firebase Key'),
+                        title: Text('${l10n.dialogEditPrefix} ${l10n.accountFirebaseKey}'),
                         content: TextField(
                           controller: controller,
-                          decoration: const InputDecoration(hintText: 'Enter Firebase Key'),
+                          decoration: InputDecoration(hintText: '${l10n.dialogEnterPrefix} ${l10n.accountFirebaseKey}'),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(dialogContext),
-                            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(dialogContext))),
+                            child: Text(l10n.dialogCancel, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
                           ),
                           ElevatedButton(
                             onPressed: () {
                               Navigator.pop(dialogContext, controller.text);
                             },
                             style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent, foregroundColor: Colors.white),
-                            child: const Text('Save'),
+                            child: Text(l10n.buttonSave),
                           ),
                         ],
                       ),
@@ -169,18 +170,18 @@ class _AccountState extends State<Account> {
             const SizedBox(height: 32),
 
             InfoSection(
-              title: 'Quick Actions',
+              title: l10n.accountQuickActions,
               children: [
                 ProfileActionTile(
                   icon: LucideIcons.settings,
-                  title: 'Settings',
-                  subtitle: 'Detection, alarm sound, theme',
+                  title: l10n.navSettings,
+                  subtitle: l10n.accountSettingsSubtitle,
                   onTap: _openSettings,
                 ),
                 ProfileActionTile(
                   icon: LucideIcons.lock,
-                  title: 'Security',
-                  subtitle: 'PIN and Digit Code for dismissing alarms',
+                  title: l10n.settingsSectionSecurity,
+                  subtitle: l10n.accountSecuritySubtitle,
                   onTap: _openSettings,
                 ),
               ],
@@ -194,7 +195,7 @@ class _AccountState extends State<Account> {
               child: ElevatedButton.icon(
                 onPressed: _showResetDialog,
                 icon: const Icon(LucideIcons.trash2, size: 20),
-                label: const Text('Reset App Data', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                label: Text(l10n.accountResetAppData, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,
                   foregroundColor: Colors.white,
@@ -212,26 +213,27 @@ class _AccountState extends State<Account> {
   }
 
   void _showEditDialog(String field, String currentValue, Function(String) onSave) {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: currentValue);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit $field'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text('${l10n.dialogEditPrefix} $field'),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: 'Enter $field'),
+          decoration: InputDecoration(hintText: '${l10n.dialogEnterPrefix} $field'),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(context))),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.dialogCancel, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
           ),
           TextButton(
             onPressed: () {
               onSave(controller.text);
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
             },
-            child: const Text('Save', style: TextStyle(color: Colors.redAccent)),
+            child: Text(l10n.buttonSave, style: const TextStyle(color: Colors.redAccent)),
           ),
         ],
       ),
@@ -248,18 +250,16 @@ class _AccountState extends State<Account> {
   /// settings - back to first-launch defaults. There's no account system to
   /// log out of, so this is what the destructive action on this screen does.
   void _showResetDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Reset App Data'),
-        content: const Text(
-          'This clears your presets, alarm history, profile details and all '
-          'settings back to defaults. It cannot be undone.',
-        ),
+        title: Text(l10n.accountResetAppData),
+        content: Text(l10n.accountResetDialogBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: Text('Cancel', style: TextStyle(color: AppColors.secondaryText(dialogContext))),
+            child: Text(l10n.dialogCancel, style: TextStyle(color: AppColors.secondaryText(dialogContext))),
           ),
           TextButton(
             onPressed: () async {
@@ -271,10 +271,10 @@ class _AccountState extends State<Account> {
               themeModeNotifier.value = ThemeMode.dark;
               localeNotifier.value = const Locale('en');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('App data reset')),
+                SnackBar(content: Text(l10n.accountResetSnackbar)),
               );
             },
-            child: const Text('Reset', style: TextStyle(color: Colors.redAccent)),
+            child: Text(l10n.dialogReset, style: const TextStyle(color: Colors.redAccent)),
           ),
         ],
       ),
