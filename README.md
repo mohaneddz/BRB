@@ -25,31 +25,33 @@ Arming Home starts `DetectionService`, which watches the sensors for the active 
 - **Distant** - GPS distance from the arm point exceeds a configurable max range
 - **Steps** - step counter advances past a configurable threshold
 
-On trigger, `AlarmController` vibrates, plays the alarm sound (a custom file picked in Settings if one's set, otherwise the system alert sound), optionally snaps a photo and grabs a GPS fix (per the active config), reverse-geocodes that fix into a place name when possible, logs the event to History, and shows a full-screen alarm that blocks the back gesture and (if a PIN is set in Settings) requires it to dismiss.
+On trigger, `AlarmController` vibrates, plays the alarm sound (a custom file picked in Settings if one's set, otherwise a built-in tone), optionally snaps a photo, records an audio clip, and grabs a GPS fix (per the active config), reverse-geocodes that fix into a place name when possible, logs the event to History, and shows a full-screen alarm that blocks the back gesture and (if a PIN or digit code is set for that preset) requires it to dismiss.
 
-Presets, the Home configuration card, History events, and Account profile fields all persist via `shared_preferences` - nothing resets on restart.
+While armed, a persistent notification shows the armed status. Presets, the Home configuration card, History events, and Account profile fields all persist via `shared_preferences` - nothing resets on restart. The UI is available in English and French.
 
 ## Configurable
 
 Nearly every part of detection is user-tunable in Settings, not hardcoded:
 
 - Motion sensitivity, detection delay, steps threshold (Steps mode), max distance (Distant mode)
-- Custom alarm sound, picked from device files/ringtones via the system picker
-- PIN lock for dismissing a triggered alarm
+- Built-in alarm tone (Siren, Loud Beep, etc.) or a custom sound file picked from device files/ringtones
+- Per-preset dismiss challenge: PIN, digit code, or none
+- Which capture steps run on trigger: photo, audio recording, GPS/reverse-geocoding, each toggle-gated by its own permission
 - Light/dark theme, applied live app-wide
+- Language (English/French)
 
 ## Known limitations
 
 - Detection is heuristic (accelerometer-magnitude/proximity/GPS/step thresholds against user-set numbers), not ML-based - it can false-trigger on a hard bump or miss a very gentle pickup.
-- The built-in alarm "tone" dropdown (Siren, Loud Beep, etc.) is cosmetic labeling - only a custom-picked sound file changes the actual audio played; otherwise it's the system alert sound.
 - Reverse geocoding is best-effort: no network or no geocoder on the device silently falls back to raw coordinates.
-- No automated tests.
+- The Account screen's "Firebase Key" field just stores an arbitrary string locally - there's no Firebase integration in the app, so it currently does nothing. Same goes for the rest of Account: it's local-only, with no real account system to log out of.
+- Test coverage is unit-level only (`test/`) - no widget or integration tests yet.
 
 ## Tech
 
 - Flutter · Dart
-- `geolocator`, `sensors_plus`, `proximity_sensor`, `pedometer`, `camera`, `permission_handler`, `vibration`, `geocoding`
-- `shared_preferences`, `image_picker`, `path_provider`, `url_launcher`, `file_picker`, `audioplayers`
+- `geolocator`, `sensors_plus`, `proximity_sensor`, `pedometer`, `camera`, `permission_handler`, `vibration`, `geocoding`, `record`
+- `shared_preferences`, `image_picker`, `path_provider`, `url_launcher`, `file_picker`, `audioplayers`, `flutter_local_notifications`, `flutter_localizations`
 
 ## Getting Started
 
