@@ -1,3 +1,5 @@
+![BRB](screenshots/cover.avif)
+
 <h1>
   <img src="assets/images/logo.png" alt="BRB icon" width="42" />
   BRB
